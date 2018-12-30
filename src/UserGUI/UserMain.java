@@ -1,13 +1,12 @@
 package UserGUI;
 
 public class UserMain {
-
-	public UserMain
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//test
-		//test
-		//test
+	
+		//user
+		int a=0;
+		int b=0;
+		System.out.println(a+b);
 	}
 
 }
