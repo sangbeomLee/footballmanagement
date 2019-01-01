@@ -5,11 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Logger;
-
-import management.Product;
-
 public class FootBallDB {
 
 	//DB접속을 위한 정보
@@ -58,7 +54,7 @@ public class FootBallDB {
 		//id, passward 옮겨놓는다.
 		String id = m.id;
 		String pw = m.msg1;
-		
+		String msg2 = m.msg2;
 		//중복 검사.
 		ArrayList<String> cID;
 		cID = getAllCustomerID();
@@ -67,15 +63,18 @@ public class FootBallDB {
 				return false;
 			};
 		}
-		
+		System.out.println(msg2);
 		//중복검사를 마친(같은 id값이 없는)메시지로 진행한다.
 		//msg를 나눈다 (이름/이메일/전화번호)
-		String[] msgArray = m.msg2.split("#");
 		
-		sql = "INSERT INTO customer values(?, ?, ?, ?, ?)";
+		String[] msgArray = msg2.split("#");
+		System.out.println(id+pw+msgArray[0]+msgArray[1]+msgArray[2]);
 		try {
+			
+			sql = "INSERT INTO customer values(?, ?, ?, ?, ?)";
 			//pstmt객체 생성, SQL 문장 저장
 			pstmt = conn.prepareStatement(sql);
+			logger.info("[sql 문제 있니?!!]");
 			
 			//pstmt.set
 			pstmt.setString(1, id);
