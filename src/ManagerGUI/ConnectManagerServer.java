@@ -1,4 +1,4 @@
-package UserGUI;
+package ManagerGUI;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-public class ConnectServer implements Runnable{
-   public User user;
+public class ConnectManagerServer implements Runnable{
+   public Manager user;
    private BufferedReader inMsg = null;
    private PrintWriter outMsg = null;
    
@@ -37,7 +37,7 @@ public class ConnectServer implements Runnable{
       
       try {
          socket = new Socket("172.16.30.242",8888);
-         logger.log(INFO,"[Client]Server 연결 성공!!");
+         logger.log(INFO,"[Manager]Server 연결 성공!!");
          gson = new Gson();
          inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
          outMsg = new PrintWriter(socket.getOutputStream(),true);
@@ -87,8 +87,8 @@ public class ConnectServer implements Runnable{
 
             e.printStackTrace();
          }
-         logger.info("[MultiChatUI]"+thread.getName() + "메시지 수진 스레드 종료됨!!");
       }
+      
    }
    
    public Socket setSocket() {

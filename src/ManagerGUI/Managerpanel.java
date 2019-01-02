@@ -63,7 +63,7 @@ public class Managerpanel{
 	TableCellRenderer renderer;
     final TableCellEditor editor = new DefaultCellEditor(new JTextField());
 
-	
+    
 	//예약 조회 관리 변수들
 	JPanel personal_day = new JPanel();
 	JPanel Inner_day1 = new JPanel();//personal_day패널 안에있는 위쪽 패널
@@ -100,6 +100,7 @@ public class Managerpanel{
 		
 	
 		model1 = new DefaultTableModel(contents,header);
+
 		stocktable = new JTable(model1);
 		stock_sc = new JScrollPane(stocktable);
 		Inner_stock4.add(stock_sc);
@@ -301,13 +302,13 @@ public class Managerpanel{
 			System.out.println("된다잇");
 
 			String value = (String) editor.getCellEditorValue();
-            TableModel model = table.getModel();
+            TableModel ex = stocktable.getModel();
 			
 			int row = stocktable.getSelectedRow();//선택한 행렬 가져오기
 			int col = stocktable.getSelectedColumn();
 			
 			
-			stocktable.editCellAt(row, col);
+			ex.setValueAt(value,row, col);
 		}
 
 
