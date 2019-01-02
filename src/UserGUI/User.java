@@ -246,5 +246,6 @@ public class User extends JFrame implements ActionListener{
 	}
 	public void addButtonActionListener(ActionListener listener) {
 		sub.Signup.addActionListener(listener);
-}
+		Log.addActionListener(listener);
+	}
 	}
