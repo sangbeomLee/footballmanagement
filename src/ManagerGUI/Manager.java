@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
 
-public class Manager extends JFrame implements ActionListener{
+public class Manager extends JFrame {
 
 		public JLabel Title;
 		public JTextField ID,Pass;
@@ -106,7 +106,7 @@ public class Manager extends JFrame implements ActionListener{
 			Join.setBounds(380,423,130,30);
 			
 			
-			Join.addActionListener(this);
+			//Join.addActionListener(this);
 			
 			Find = new JButton("아이디/비번찾기");
 			Find.setBounds(520,423,130,30);
@@ -127,21 +127,20 @@ public class Manager extends JFrame implements ActionListener{
 			super.setVisible(true);
 	}
 	
-	public void actionPerformed(ActionEvent e) {
+	/*public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if(o==Join) {
-			//sub.setSize(100,100);
 			sub.setLocation(200, 50);
 			sub.setVisible(true);
 			
 			
 		}
 	
-	}
+	}*/
 		
 	public class SubFrame extends Frame{
-		public JTextField IDin,Passin,Passrein,Name,Mail,Number,Field;
-		
+		public JTextField IDin,Passin,Passrein,Name,Mail,Number;
+		public JComboBox<String> Field;
 		public JLabel LIDin,LPassin,LPassrein,LName,LMail,LNumber,Passre,LField;
 		public JButton Check,Signup;
 		boolean tatus=false;
@@ -196,30 +195,21 @@ public class Manager extends JFrame implements ActionListener{
 			LNumber.setFont(LNumber.getFont().deriveFont(10f));
 			LNumber.setBounds(20, 480, 50, 40);
 			
-			Field = new JTextField();
+			Field = new JComboBox<String>();
 			Field.setFont(Field.getFont().deriveFont(10f));
 			Field.setBounds(100, 510, 150, 40);
 			LField = new JLabel("풋살장");
 			LField.setFont(LField.getFont().deriveFont(10f));
 			LField.setBounds(20, 510, 50, 40);
 			
-			Passre = new JLabel("sss");
-			Passre.setSize(30, 30);
-			Passre.setBounds(300,270,100,50);
 			pass1 = Passin.getText();
 			pass2 = Passrein.getText();
 			
-			//Passrein.add
-			if(pass1==pass2)
-			{
-				Passre.setText("Good");
-			}
-			else {
-				Passre.setText("다름");
-			}
 			Signup = new JButton("등록");
 			Signup.setSize(30, 30);
-			Signup.setBounds(400,70,100,50);
+			Signup.setBounds(350,400,100,50);
+			
+			
 			add(IDin);
 			add(LIDin);
 			add(Passin);
@@ -231,7 +221,7 @@ public class Manager extends JFrame implements ActionListener{
 			add(Mail);
 			add(LMail);
 			add(Number);
-			add(Passre);
+			add(LNumber);
 			add(Signup);
 			add(Field);
 			add(LField);
@@ -253,8 +243,13 @@ public class Manager extends JFrame implements ActionListener{
 		}
 		
 	}
+	
+	public void setSub(SubFrame sb) {
+		sb = sub;
+	}
 	public void addButtonActionListener(ActionListener listener) {
 		sub.Signup.addActionListener(listener);
 		Log.addActionListener(listener);
+		Join.addActionListener(listener);
 	}
 	}

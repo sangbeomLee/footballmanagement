@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.*;
 import com.google.gson.Gson;
+
+import ManagerGUI.Manager.SubFrame;
+
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
@@ -20,10 +23,10 @@ import java.io.InputStreamReader;
 
 
 public class ConnectManagerServer implements Runnable{
-   public Manager user;
+   public Manager manager;
    private BufferedReader inMsg = null;
    private PrintWriter outMsg = null;
-   
+   String fname;
    String outm;
    Socket socket = null;
    Message m;
@@ -31,10 +34,10 @@ public class ConnectManagerServer implements Runnable{
    Thread thread;
    Gson gson;
    boolean status;
-   
-   public void connectServer() {
+   SubFrame sub;
+   public void connectServer(Manager manager) {
       logger = Logger.getLogger(this.getClass().getName());
-      
+      this.manager = manager;
       try {
          socket = new Socket("172.16.30.242",8888);
          logger.log(INFO,"[Manager]Server 연결 성공!!");
@@ -63,6 +66,7 @@ public class ConnectManagerServer implements Runnable{
          try {
             msg = inMsg.readLine();
             m = gson.fromJson(msg, Message.class);//Message 클래스 형식으로 변환해준다.
+            System.out.println(m.msg1);
             if(m.msg2.equals("회원가입실패"))
             {
                JOptionPane.showMessageDialog(null,"아이디가 중복됩니다.","", JOptionPane.WARNING_MESSAGE);
@@ -74,16 +78,28 @@ public class ConnectManagerServer implements Runnable{
             else if(m.msg2.equals("로그인성공"))
             {
                JOptionPane.showMessageDialog(null, "로그인성공");
-               user.setVisible(false);
+               manager.setVisible(false);
             }
             else if(m.msg2.equals("비밀번호다름"))
             {
                JOptionPane.showMessageDialog(null, "비밀번호가 다릅니다.","" ,JOptionPane.WARNING_MESSAGE);
             }
-            
+            else if(m.type1.equals("fname"))
+            {
+            	System.out.println(m.msg1);
+            	fname = m.msg1;
+            	String[] frameArray = fname.split("#");
+            	System.out.println(frameArray[0]);
+            	
+            	sub = manager.sub;
+				for(int i=0;i<frameArray.length;i++)
+				sub.Field.addItem(frameArray[i]);
+				sub.setLocation(200, 50);
+				sub.setVisible(true);
+            }
          } catch (IOException e) {
             // TODO Auto-generated catch block
-            logger.log(WARNING,"[User]메시지 스트림 종료!!");
+            logger.log(WARNING,"[manager]메시지 스트림 종료!!");
 
             e.printStackTrace();
          }
@@ -106,4 +122,11 @@ public class ConnectManagerServer implements Runnable{
    public Gson setGson() {
       return this.gson;
    }
+   public String Setfname() {
+	   return fname;
+   }
+   public void setSub(SubFrame sub) {
+	   this.sub = sub;
+   }
+   
 }
