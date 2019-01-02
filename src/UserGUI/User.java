@@ -196,20 +196,9 @@ public class User extends JFrame implements ActionListener{
 			LNumber.setFont(LNumber.getFont().deriveFont(10f));
 			LNumber.setBounds(20, 480, 50, 40);
 			
-			Passre = new JLabel("sss");
-			Passre.setSize(30, 30);
-			Passre.setBounds(300,270,100,50);
-			pass1 = Passin.getText();
-			pass2 = Passrein.getText();
 			
 			//Passrein.add
-			if(pass1==pass2)
-			{
-				Passre.setText("Good");
-			}
-			else {
-				Passre.setText("다름");
-			}
+			
 			Signup = new JButton("등록");
 			Signup.setSize(30, 30);
 			Signup.setBounds(400,70,100,50);
@@ -224,7 +213,6 @@ public class User extends JFrame implements ActionListener{
 			add(Mail);
 			add(LMail);
 			add(Number);
-			add(Passre);
 			add(Signup);
 			
 			//id = IDin.getText();
