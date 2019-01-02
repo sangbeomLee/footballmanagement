@@ -44,12 +44,7 @@ public class UserController implements Runnable {
 			
 			inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			outMsg = new PrintWriter(socket.getOutputStream(),true);
-			
-			
-			
-		
-			
-			
+
 			thread = new Thread(this);
 			thread.start();
 			
