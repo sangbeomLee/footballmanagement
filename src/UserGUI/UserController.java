@@ -69,7 +69,7 @@ public class UserController implements Runnable {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					Object obj = e.getSource();
-					if(obj == user.sub.Signup)
+					if(obj == user.sub.Signup &&m. )
 					{
 					
 						String id = user.sub.IDin.getText();
@@ -93,10 +93,14 @@ public class UserController implements Runnable {
 	public void run() {
 		status = true;
 		String msg;
+		String outm;
 		while(status) {
 			try {
 				msg = inMsg.readLine();
 				m = gson.fromJson(msg, Message.class);//Message 클래스 형식으로 변환해준다.
+				
+				
+				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -107,11 +111,5 @@ public class UserController implements Runnable {
 			logger.info("[MultiChatUI]"+thread.getName() + "메시지 수진 스레드 종료됨!!");
 		}
 	}
-	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-		UserController app = new UserController(new User());
-		
-		app.appMain();
-	}*/
+	
 }
