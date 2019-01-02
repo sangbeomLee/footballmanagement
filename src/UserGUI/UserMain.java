@@ -7,6 +7,9 @@ public class UserMain {
 		// TODO Auto-generated method stub
 		//test
 		User frame = new User();
+		UserController app =new UserController(frame);
+		app.appMain();
+	
 	}
 
 }
