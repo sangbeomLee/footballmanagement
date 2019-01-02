@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
@@ -104,8 +105,32 @@ public class ConnectThread extends Thread {
 					}
 					else if(m.type2.equals("field")) {
 						String fname = fbdb.fieldCheck();
-						outMsg.println(gson.toJson(new Message("", fname, "풋살장이름", "풋살장", "administer")));
+						outMsg.println(gson.toJson(new Message("", fname, "풋살장이름", "fname", "administer")));
 						logger.info("[풋살장 내역 완료!]");
+					}
+					else if(m.type2.equals("login")) {
+						System.out.println(m.id + "#" + m.msg1);
+						if(fbdb.checkAdministerLogin(m.id, m.msg1) == 1) {
+							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 성공했습니다.", "로그인성공", "administer", "server")));
+							logger.info("[로그인 성공]!!");
+						}
+						else if(fbdb.checkAdministerLogin(m.id, m.msg1) == 0) {
+							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 실패했습니다.", "비밀번호다름", "administer", "server")));
+							logger.info("[로그인 실패(패스워드)]!!");
+						}
+						else {
+							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 실패했습니다.", "로그인실패", "administer", "server")));
+							logger.info("[로그인 실패]!!");
+						}
+					}
+					else if(m.type2.equals("setproduct")) {
+						ArrayList<String> items = fbdb.getProduct(m);
+						
+						for(String send : items) {
+							outMsg.println(gson.toJson(new Message(m.id, send, "productinfo", "administer", "server")));
+							logger.info("[프로덕트 내용 전송중..]!!");
+						}
+						logger.info("[프로덕트 내용 완료]!!");
 					}
 				}
 				else{

@@ -53,7 +53,7 @@ public class FootBallDB {
 
 		sql = "select fName from footballfield";
 
-		String fname = null;
+		String fname = "";
 		// 전체 검색 데이터를 전달하는 ArrayList
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -61,7 +61,13 @@ public class FootBallDB {
 
 			while (rs.next()) {
 				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
-				fname = fname + rs.getString("fName");
+				if (fname.equals("")) {
+					fname = fname +rs.getString("fName");
+				}
+				else {
+					fname = fname + "#" +rs.getString("fName");
+				}
+				
 			}
 			logger.info("[fieldCheck] 성공!!");
 		} catch (Exception e) {
@@ -70,6 +76,7 @@ public class FootBallDB {
 		}
 		return fname;
 	}
+	//id 등록
 	public boolean idRegistrationCustomer(Message m) {
 		
 		//id, passward 옮겨놓는다.
@@ -135,9 +142,11 @@ public class FootBallDB {
 		//msg를 나눈다 (이름/이메일/전화번호)
 		
 		String[] msgArray = msg2.split("#");
-		System.out.println(id+pw+msgArray[0]+msgArray[1]+msgArray[2] + msgArray[3]);
+		int fID = changeF(msgArray[3]);
+		//int fID = Integer.parseInt(msgArray[3])''
+		System.out.println(id+"#"+pw+"#"+msgArray[0]+"#"+msgArray[1]+"#"+msgArray[2]+"#" + fID);
 		try {
-			
+			System.out.println();
 			sql = "INSERT INTO administer values(?, ?, ?, ?, ?, ?)";
 			//pstmt객체 생성, SQL 문장 저장
 			pstmt = conn.prepareStatement(sql);
@@ -149,7 +158,7 @@ public class FootBallDB {
 			pstmt.setString(3, msgArray[0]);
 			pstmt.setString(4, msgArray[1]);
 			pstmt.setString(5, msgArray[2]);
-			pstmt.setString(6, msgArray[3]);
+			pstmt.setInt(6, fID);
 			//SQL문 전송
 			pstmt.executeUpdate();
 			
@@ -162,7 +171,30 @@ public class FootBallDB {
 		}
 	}
 	
-	
+	public int changeF(String fName) {
+		sql = "select fID,fName from footballfield";
+		
+		int fID = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
+				if(fName.equals(rs.getString("fName"))) {
+					fID = rs.getInt("fID");
+					return fID;
+				}
+			}
+			logger.info("[footballfieldchangeF] 성공!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[footballfieldchangeF] 문제!!");
+		}
+		return fID;
+	}
+
 	//전체상품을 가져온다.
 	public ArrayList<String> getAllCustomerID(){
 		sql = "select cID from customer";
@@ -209,6 +241,7 @@ public class FootBallDB {
 		return aID;
 	}
 
+	//login check
 	public int checkCustomerLogin(String id, String pw){
 		sql = "select cID,cPassword from customer";
 		String cID;
@@ -241,4 +274,77 @@ public class FootBallDB {
 		logger.info("[checkID login] 실패!!");
 		return -1;
 	}
+	public int checkAdministerLogin(String id, String pw){
+		sql = "select aID,aPassword from administer";
+		String aID;
+		String aPassword;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				aID 		= rs.getString("aID");
+				aPassword 	= rs.getString("aPassword");
+				if(aID.equals(id)) {
+					if(aPassword.equals(pw)) {
+						logger.info("[checkID login] 성공!!");
+						return 1;
+					}
+					else {
+						logger.info("[checkID login] 비밀번호오류!!!");
+						return 0;
+					}
+				}
+			}
+			logger.info("[checkID login] 실패!!");
+			return -1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("[checkID login] 실패!!");
+		}
+		logger.info("[checkID login] 실패!!");
+		return -1;
+	}
+
+	public ArrayList<String> getProduct(Message m) {
+		// fid 바꾼다.
+		int fID = changeF(m.type2);
+		
+		sql = "select pName,pQuntity,pRepair from product where " + fID;
+
+		// 전체 검색 데이터를 전달하는 ArrayList
+		ArrayList<String> product = new ArrayList<String>();
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
+				String temp = "";
+				temp = temp + rs.getString("pName");
+				temp = temp + "#" + Integer.toString(rs.getInt("pQuntity"));
+				temp = temp + "#" + Integer.toString(rs.getInt("pRepair"));
+				System.out.println(temp);
+				product.add(temp);
+			}
+			logger.info("[getProduct] 성공!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[getProduct] 문제!!");
+		}
+		return product;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
