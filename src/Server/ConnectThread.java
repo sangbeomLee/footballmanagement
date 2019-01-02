@@ -69,10 +69,44 @@ public class ConnectThread extends Thread {
 						
 						// 해당 클라이언트 스레드 종료 status false
 					}
+					else if(m.type2.equals("login")) {
+						System.out.println(m.id + "#" + m.msg1);
+						if(fbdb.checkCustomerLogin(m.id, m.msg1) == 1) {
+							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 성공했습니다.", "로그인성공", "customer", "server")));
+							logger.info("[로그인 성공]!!");
+						}
+						else if(fbdb.checkCustomerLogin(m.id, m.msg1) == 0) {
+							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 실패했습니다.", "비밀번호다름", "customer", "server")));
+							logger.info("[로그인 실패(패스워드)]!!");
+						}
+						else {
+							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 실패했습니다.", "로그인실패", "customer", "server")));
+							logger.info("[로그인 실패!!");
+						}
+					}
 				}
 				else if (m.type1.equals("administer")) {
 					//msgSendAll(gson.toJson(new Message(m.id, "", "님이 로그인 했습니다.", "server")));
-					
+					logger.info("[administer  들어옴]!!");
+					if (m.type2.equals("register")) {
+						//데이터 베이스에있는 거랑 확인해야함.
+						//데이터베이스에 아이디랑 패스워드 전해줘야한다.
+						if(fbdb.idRegistrationAdminister(m)) {
+							outMsg.println(gson.toJson(new Message(m.id, "님이 회원가입에 성공했습니다.", "회원가입성공", "administer", "server")));
+							logger.info("[db등록 성공]!!");
+						}
+						else {
+							outMsg.println(gson.toJson(new Message(m.id, "님이 회원가입에 실패했습니다.", "회원가입실패", "administer", "server")));
+							logger.info("[db등록 실패]!!");
+						}
+						
+						// 해당 클라이언트 스레드 종료 status false
+					}
+					else if(m.type2.equals("field")) {
+						String fname = fbdb.fieldCheck();
+						outMsg.println(gson.toJson(new Message("", fname, "풋살장이름", "풋살장", "administer")));
+						logger.info("[풋살장 내역 완료!]");
+					}
 				}
 				else{
 					//잘못된 접근입니다 띄우기

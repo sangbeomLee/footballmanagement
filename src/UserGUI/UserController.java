@@ -39,12 +39,13 @@ public class UserController implements Runnable {
 	}
 	public void connectServer() {
 		try {
-			socket = new Socket("172.30.1.24",8888);
+			socket = new Socket("172.16.30.242",8888);
 			logger.log(INFO,"[Client]Server 연결 성공!!");
 			
 			inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			outMsg = new PrintWriter(socket.getOutputStream(),true);
-
+			Message m = new Message();
+		
 			thread = new Thread(this);
 			thread.start();
 			
@@ -73,6 +74,7 @@ public class UserController implements Runnable {
 						String type1 ="customer";
 						String type2 = "register";
 						m = new Message(id, pw, msg, type1, type2);
+						
 						outMsg.println(gson.toJson(m));
 						JOptionPane.showMessageDialog(null, "회원가입이되었습니다");
 					}

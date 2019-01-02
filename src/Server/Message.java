@@ -1,11 +1,11 @@
 package Server;
 
 public class Message {
-	String id; //login ID
-	String msg1;
-	String msg2;
-	String type1;
-	String type2;
+	public String id; //login ID
+	public String msg1;
+	public String msg2;
+	public String type1;
+	public String type2;
 	
 	public Message() {}
 	
