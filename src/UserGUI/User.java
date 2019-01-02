@@ -108,12 +108,9 @@ public class User extends JFrame implements ActionListener{
 			
 			Join.addActionListener(this);
 			
-			Find = new JButton("아이디/비번찾기");
-			Find.setBounds(520,423,130,30);
 			
 			//Log.addActionListener(this);
 			
-			getContentPane().add(Find);
 			getContentPane().add(Join);
 			getContentPane().add(Log);
 			getContentPane().add(ID);
@@ -197,11 +194,11 @@ public class User extends JFrame implements ActionListener{
 			LNumber.setBounds(20, 480, 50, 40);
 			
 			
-			//Passrein.add
+			
 			
 			Signup = new JButton("등록");
 			Signup.setSize(30, 30);
-			Signup.setBounds(400,70,100,50);
+			Signup.setBounds(350,400,100,50);
 			add(IDin);
 			add(LIDin);
 			add(Passin);
@@ -213,13 +210,9 @@ public class User extends JFrame implements ActionListener{
 			add(Mail);
 			add(LMail);
 			add(Number);
+			add(LNumber);
 			add(Signup);
 			
-			//id = IDin.getText();
-			//msg1 = Pass.getText();
-			//msg2 = Name.getText()+"#"+Mail.getText()+"#"+Number.getText();
-			//type1 = "customer";
-			//type2 = "register";
 			
 			addWindowListener(new WindowAdapter() {
 			
@@ -235,5 +228,6 @@ public class User extends JFrame implements ActionListener{
 	public void addButtonActionListener(ActionListener listener) {
 		sub.Signup.addActionListener(listener);
 		Log.addActionListener(listener);
+
 	}
 	}

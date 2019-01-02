@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.*;
 import com.google.gson.Gson;
+
+import ManagerGUI.Manager.SubFrame;
+
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
@@ -22,6 +25,7 @@ public class ManagerController {
 	public Manager administer;
 	private BufferedReader inMsg = null;
 	private PrintWriter outMsg = null;
+	public SubFrame sub;
 	
 	String outm;
 	Socket socket = null;
@@ -55,7 +59,7 @@ public class ManagerController {
 	      logger = Logger.getLogger(this.getClass().getName());
 	      
 	      connectS = new ConnectManagerServer();
-	      connectS.connectServer();
+	      connectS.connectServer(administer);
 	      socket = connectS.setSocket();
 	      inMsg = connectS.setInMsg();
 	      outMsg = connectS.setOutMsg();
@@ -66,6 +70,7 @@ public class ManagerController {
 		
 	}
 	public void appMain() {
+			
 			administer.addButtonActionListener(new ActionListener() {
 				
 				@Override
@@ -90,19 +95,29 @@ public class ManagerController {
 						}
 						String id = administer.sub.IDin.getText();
 						String pw = administer.sub.Passin.getText();
-						String msg = administer.sub.Name.getText()+"#"+administer.sub.Mail.getText()+"#"+administer.sub.Number.getText() + "#" + administer.sub.Field.getText();
+						String msg = administer.sub.Name.getText()+"#"+administer.sub.Mail.getText()+"#"+administer.sub.Number.getText() + "#" + administer.sub.Field.getSelectedItem();
 						String type1 ="administer";
 						String type2 = "register";
 						m = new Message(id, pw, msg, type1, type2);
 						outMsg.println(gson.toJson(m));
 						
 					}
+					if(obj ==administer.Join )
+					{
+						m = new Message("","","","administer","field");
+						outMsg.println(gson.toJson(m));
+						
+						
+					}
+					
 					
 				}
 			});
 			
 
 	}
-	
+	public void setSub(SubFrame sub) {
+		   this.sub = sub;
+	   }
 	
 }
