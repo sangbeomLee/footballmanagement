@@ -8,7 +8,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,7 +20,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 
 public class Managerpanel{
@@ -50,8 +60,9 @@ public class Managerpanel{
 	JTable stocktable;
 	JScrollPane stock_sc;
 	DefaultTableModel model1;
+	TableCellRenderer renderer;
+    final TableCellEditor editor = new DefaultCellEditor(new JTextField());
 
-	
 	
 	//예약 조회 관리 변수들
 	JPanel personal_day = new JPanel();
@@ -69,7 +80,7 @@ public class Managerpanel{
 	JButton b1 = new JButton("재고 관리");
 	JButton b2 = new JButton("휴무일 관리");
 	
-	
+
 	public void stock() {
 		
 		String header [] = {"물품","수량","대여가능"};
@@ -79,7 +90,7 @@ public class Managerpanel{
 		contents[2][0] = "골대";
 		
 		
-		for(int i=0;i<3;i++)//처음 수량 초기화
+		for(int i=0;i<3;i++)//처음 수량 초기화 나중에 지워야함
 		{
 			for(int j=1;j<3;j++)
 			{
@@ -87,10 +98,14 @@ public class Managerpanel{
 			}
 		}
 		
+	
 		model1 = new DefaultTableModel(contents,header);
 		stocktable = new JTable(model1);
 		stock_sc = new JScrollPane(stocktable);
 		Inner_stock4.add(stock_sc);
+		
+		renderer = new DefaultTableCellRenderer();
+		
 		
 		Inner_stock1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
 		Inner_stock1.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -166,6 +181,8 @@ public class Managerpanel{
 		stockbtn1.addActionListener(new MyMouseListener2());
 		stockbtn2.addActionListener(new MyMouseListener2());
 		stockbtn3.addActionListener(new MyMouseListener2());
+        editor.addCellEditorListener(new MyMouseListener2());
+
 		
 		//buttonpanel.setPreferredSize(new Dimension(1000, 100));
 		buttonpanel.add(b1);
@@ -196,12 +213,29 @@ public class Managerpanel{
 		
 	}
 
-	 class MyMouseListener2 implements ActionListener{
+	 class MyMouseListener2 implements ActionListener,CellEditorListener{
 
-		
+		/*
+		 public void keyPressed(KeyEvent e) { 
+			 if (e.getKeyCode() == KeyEvent.VK_ENTER) { 
+				 
+				 System.out.println("된다잇");
+			 }
+			 
+		 }
+		 */
 		 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+		     //System.out.println("action performed");
+			//int row = stocktable.getSelectedRow();//선택한 행렬 가져오기
+			//int col = stocktable.getSelectedColumn();
+
+			//stocktable.editCellAt(row, col);
+			//System.out.println(stocktable.getValueAt(row, col));
+			
+			
 			
 			if(e.getSource() == b1)
 			{
@@ -240,19 +274,45 @@ public class Managerpanel{
 			}
 			else if(e.getSource() == stockbtn3)//수정
 			{
+				/*
 				 int row = stocktable.getSelectedRow();//선택한 행렬 가져오기
 				 int col = stocktable.getSelectedColumn();
 				 
 				 stocktable.setValueAt(t1.getText(),row,col);
 				 stocktable.setValueAt(t2.getText(),row,col);
 				 stocktable.setValueAt(t3.getText(),row,col);
-				 
+				 */
 				
 			}
-			
+	
 			
 			
 		}//actionPerformed close
+
+		@Override
+		public void editingCanceled(ChangeEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void editingStopped(ChangeEvent e) {
+			//System.out.println(stocktable.getValueAt(row, col));
+			System.out.println("된다잇");
+
+			String value = (String) editor.getCellEditorValue();
+            TableModel model = table.getModel();
+			
+			int row = stocktable.getSelectedRow();//선택한 행렬 가져오기
+			int col = stocktable.getSelectedColumn();
+			
+			
+			stocktable.editCellAt(row, col);
+		}
+
+
+
+		
 
 
 	 }//ActionListener close
