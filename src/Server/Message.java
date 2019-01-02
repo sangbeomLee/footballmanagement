@@ -18,3 +18,4 @@ public class Message {
 		this.type2  = type2;
 	}
 }
+
