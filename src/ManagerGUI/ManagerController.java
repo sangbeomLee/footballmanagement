@@ -30,9 +30,28 @@ public class ManagerController {
 	Thread thread;
 	Gson gson;
 	ConnectManagerServer connectS;
+	Managerpanel Manager;
 	
-	public ManagerController(Manager administer) {
-		 this.administer = administer;
+	public ManagerController(int num) {
+		
+		 //Manager = new Managerpanel();	
+
+		
+		 if(num == 1) {
+			  administer= new Manager(); //로그인 화면
+			  appMain();
+		 }
+		 else if(num == 2)
+		 {
+			 System.out.println("AA");
+			 //administer.setVisible(false);
+			 Manager = new Managerpanel();	
+		 }
+		 
+		  
+		
+		  
+		 //this.administer = administer;
 	      logger = Logger.getLogger(this.getClass().getName());
 	      
 	      connectS = new ConnectManagerServer();
@@ -42,6 +61,8 @@ public class ManagerController {
 	      outMsg = connectS.setOutMsg();
 	      thread = connectS.setThread();
 	      gson = connectS.setGson();
+	      
+	      
 		
 	}
 	public void appMain() {
@@ -55,6 +76,10 @@ public class ManagerController {
 					if(obj ==administer.Log) {
 						outMsg.println(gson.toJson(new Message(administer.ID.getText(),administer.Pass.getText(),"","customer","login")));
 						logger.info("[로그인 보냄]!!");
+					
+						
+						//new Managerpanel();
+						
 					}
 					
 					if(obj == administer.sub.Signup)

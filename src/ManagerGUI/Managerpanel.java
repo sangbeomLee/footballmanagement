@@ -172,7 +172,7 @@ public class Managerpanel{
 	
 	
 	Managerpanel(){//»ý¼ºÀÚ
-		
+		System.out.println("helllllll");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout(0,0));
 

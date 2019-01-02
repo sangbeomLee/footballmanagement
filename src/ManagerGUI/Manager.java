@@ -16,7 +16,9 @@ public class Manager extends JFrame implements ActionListener{
 		public SubFrame sub;
 		public Manager(){
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setLayout(null);
+			
+			
+			
 			getContentPane().setBackground(Color.WHITE);
 			
 			sub = new SubFrame();
@@ -28,6 +30,7 @@ public class Manager extends JFrame implements ActionListener{
 			Title.setFont(Title.getFont().deriveFont(15f));
 			Title.setBounds(375,50,250,70);
 			Title.setBackground(Color.black);
+
 			
 			ID = new JTextField("¾ÆÀÌµð");
 			ID.setFont(ID.getFont().deriveFont(10f));

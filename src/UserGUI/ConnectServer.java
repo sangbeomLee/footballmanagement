@@ -1,4 +1,4 @@
-package ManagerGUI;
+package UserGUI;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
+import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,12 +21,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-public class ConnectManagerServer implements Runnable{
-   public Manager user;
+public class ConnectServer implements Runnable{
+   public User user;
    private BufferedReader inMsg = null;
    private PrintWriter outMsg = null;
-   
-   ManagerController MC = new ManagerController();
    String outm;
    Socket socket = null;
    Message m;
@@ -33,12 +33,13 @@ public class ConnectManagerServer implements Runnable{
    Gson gson;
    boolean status;
    
-   public void connectServer() {
+   public void connectServer(User user) {
+      this.user = user;
       logger = Logger.getLogger(this.getClass().getName());
       
       try {
          socket = new Socket("172.16.30.242",8888);
-         logger.log(INFO,"[Manager]Server 연결 성공!!");
+         logger.log(INFO,"[Client]Server 연결 성공!!");
          gson = new Gson();
          inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
          outMsg = new PrintWriter(socket.getOutputStream(),true);
@@ -70,13 +71,11 @@ public class ConnectManagerServer implements Runnable{
             }
             else if(m.msg2.equals("회원가입성공")) {
                JOptionPane.showMessageDialog(null, "회원가입이되었습니다");
-            
             }
             
             else if(m.msg2.equals("로그인성공"))
             {
                JOptionPane.showMessageDialog(null, "로그인성공");
-               
             }
             else if(m.msg2.equals("비밀번호다름"))
             {
@@ -90,7 +89,6 @@ public class ConnectManagerServer implements Runnable{
             e.printStackTrace();
          }
       }
-      
    }
    
    public Socket setSocket() {
