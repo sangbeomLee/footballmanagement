@@ -60,7 +60,7 @@ public class ConnectThread extends Thread {
 
 				// 파싱된 문자열 배열의 두 번째 요소값
 				// 로그아웃 메시지
-				System.out.println(m.id + "#" +m.msg2 + "#" + m.type1 + "#" + m.type2);
+				
 				if (m.type1.equals("customer")) {
 					logger.info("[커스토머  들어옴]!!");
 					if (m.type2.equals("register")) {
@@ -78,7 +78,7 @@ public class ConnectThread extends Thread {
 						// 해당 클라이언트 스레드 종료 status false
 					}
 					else if(m.type2.equals("login")) {
-						System.out.println(m.id + "#" + m.msg1);
+						
 						if(fbdb.checkCustomerLogin(m.id, m.msg1) == 1) {
 							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 성공했습니다.", "로그인성공", "customer", "server")));
 							logger.info("[로그인 성공]!!");
@@ -124,6 +124,15 @@ public class ConnectThread extends Thread {
 						}
 						
 					}
+					//현중이가 좋아하는 스테이트
+					else if(m.type2.equals("findstate")) {
+						System.out.println(m);
+						ArrayList<String>reserve = fbdb.customerR(m);
+						for(String send : reserve) {
+							outMsg.println(gson.toJson(new Message("", send, "state", "customer", "server")));
+						}
+						logger.info("[고객 풋살장 state 내역 완료!]");
+					}
 				}
 				else if (m.type1.equals("administer")) {
 					//msgSendAll(gson.toJson(new Message(m.id, "", "님이 로그인 했습니다.", "server")));
@@ -148,7 +157,7 @@ public class ConnectThread extends Thread {
 						logger.info("[풋살장 내역 완료!]");
 					}
 					else if(m.type2.equals("login")) {
-						System.out.println(m.id + "#" + m.msg1);
+						
 						if(fbdb.checkAdministerLogin(m.id, m.msg1) == 1) {
 							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 성공했습니다.", "로그인성공", "administer", "server")));
 							logger.info("[로그인 성공]!!");
@@ -232,7 +241,6 @@ public class ConnectThread extends Thread {
 						}
 						logger.info("[checkcozyday 완료]!!");
 					}
-					
 				}
 				else{
 					//잘못된 접근입니다 띄우기

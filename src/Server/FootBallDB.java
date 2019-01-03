@@ -885,4 +885,67 @@ public class FootBallDB {
 		return cozyday;
 
 	}
+	//예약 상황 보내주기
+	public ArrayList<String> customerR(Message m) {
+		
+		String cID = m.id;
+
+		sql = "select distinct rv.fID, date_format(dm.dDate,'%Y-%m-%d') dDate, dm.dTime dTime, rv.rHelper from reservation rv,datemanage dm where rv.cID = ? and rv.dID = dm.dID order by dDate";
+		
+		// 전체 검색 데이터를 전달하는 ArrayList
+		ArrayList<String> reserveinfo = new ArrayList<String>();
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cID);
+			System.out.println(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
+				String temp = "";
+				temp = temp + rs.getInt("fID");
+				System.out.println("1" + temp);
+				temp = temp + "#" + rs.getString("dDate");
+				System.out.println("2" + temp);
+				temp = temp + "#" + rs.getString("dTime");
+				System.out.println("3" + temp);
+				temp = temp + "#" + Integer.toString(rs.getInt("rHelper"));
+				System.out.println("####2222#");
+				reserveinfo.add(temp);
+			}
+			
+			logger.info("[customerR] 성공!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[customerR] 문제!!");
+		}
+		return reserveinfo;
+
+	}
+	//풋살장 id를 이름으로 바꿔주는 함수
+	public String changeFname(int fID) {
+		sql = "select fID,fName from footballfield";
+
+		String fName = "";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
+
+				if (fID == (rs.getInt("fID"))) {
+					fName = rs.getString("fName");
+					logger.info("[changeFname] 성공!!");
+					return fName;
+				}
+			}
+			logger.info("[changeFname] 실패!!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[changeFname] 문제!!");
+		}
+		return fName;
+	}
 }
