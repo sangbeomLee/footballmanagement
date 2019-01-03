@@ -37,7 +37,7 @@ public class Managerpanel{
 	JLabel mangerID = new JLabel(); 
 	JLabel mangerID2 = new JLabel(); 
 	
-	
+	//재고관리 UI
 	JPanel stockPanel = new JPanel();
 	JPanel Inner_stock1 = new JPanel();
 	JPanel Inner_stock2 = new JPanel();
@@ -46,7 +46,7 @@ public class Managerpanel{
 	JPanel btn_label1 = new JPanel();
 	JPanel btn_label2 = new JPanel();
 	JPanel btn_label3 = new JPanel();
-	JTextField t1 = new JTextField();
+	JTextField t1 = new JTextField(5);
 	JTextField t2 = new JTextField();
 	JTextField t3 = new JTextField();
 	JLabel l1 = new JLabel("품목");
@@ -61,16 +61,21 @@ public class Managerpanel{
     String header [] = {"품명","수량","대여가능"};
     String contents[][];
 	
+    //예약현황 관리 UI
 	JPanel personal_day = new JPanel();
-	JPanel Inner_day1 = new JPanel();//personal_day
-	JPanel Inner_day2 = new JPanel();//personal_day
-	JPanel Inner_day3 = new JPanel();//personal_day 
-	JButton daybtn1 = new JButton("재고관리");
-	JButton daybtn2 = new JButton("예약 현황");
-	//JComboBox combo = new JComboBox();
+	JPanel Inner_day1 = new JPanel();
+	JPanel Inner_day2 = new JPanel();
+	JPanel Inner_day3 = new JPanel();
+	JButton daybtn1 = new JButton("예약현황");
+	JButton daybtn2 = new JButton("휴무일 지정");
 	JTable table;
 	JScrollPane sc;
-
+	DefaultTableModel model2;
+	String header2 [] = {"날짜","시간","예약현황"};
+	String contents2 [][];
+	JTextField pdt;
+	
+	
 	JButton b1 = new JButton("재고 관리");
 	JButton b2 = new JButton("예약 현황");
 
@@ -93,7 +98,7 @@ public class Managerpanel{
 		Inner_stock1.setBorder(new EmptyBorder(10, 10, 10, 10));
 		Inner_stock1.add(mangerID);//관리자 아이디 표시 라벨
 
-		Inner_stock2.setPreferredSize(new Dimension(300, 600));
+		Inner_stock2.setPreferredSize(new Dimension(300, 400));
 		Inner_stock2.setLayout(new GridLayout(3,2,30,50));
 		Inner_stock2.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -114,7 +119,7 @@ public class Managerpanel{
 		//Inner_stock3.add(stockbtn3);
 
 
-		stockPanel.setLayout(new BorderLayout());
+		stockPanel.setLayout(null);
 		stockPanel.add(Inner_stock1,BorderLayout.NORTH);
 		stockPanel.add(Inner_stock2,BorderLayout.WEST);
 		stockPanel.add(Inner_stock3,BorderLayout.SOUTH);
@@ -126,28 +131,53 @@ public class Managerpanel{
 
 	public void day() {
 
-		String header [] = {"날짜","시간","예약현황"};
-		String contents [][] = new String[100][3];
+		contents2 = new String[0][0];
 
-		table = new JTable(contents,header);
+		model2 = new DefaultTableModel(contents2,header2);
+		table = new JTable(model2);
+		Inner_day3.setLayout(null);
+		Inner_day3.setPreferredSize(new Dimension(90
+				0,50));
+		pdt = new JTextField();
+		pdt.setBounds(400, 0, 100, 30); //휴무일 텍스트필드 위치 지정
+		daybtn2.setBounds(500, 0, 80, 35);//휴무일 버튼
+		
+		Inner_day3.add(daybtn1);
+		Inner_day3.add(daybtn2);
+		Inner_day3.add(pdt);
 		sc = new JScrollPane(table);
-
-	Inner_day1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
+		//pdt.setBounds(0,0,30,30);
+		
+		sc.setPreferredSize(new Dimension(400,280));///스크롤 크기 지정
+		Inner_day2.add(sc);
+		
+		/*Inner_day1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
 		Inner_day1.setBorder(new EmptyBorder(10, 10, 10, 10));
 		Inner_day1.add(mangerID2,BorderLayout.WEST);// ID 라벨 부착
 
 		Inner_day2.add(sc);
 
-		Inner_day3.setLayout(new FlowLayout(FlowLayout.RIGHT,10,0));
+		//Inner_day3.setLayout(null);
+		Inner_day3.setLayout(new FlowLayout(FlowLayout.CENTER,10,0));
 		Inner_day3.setBorder(new EmptyBorder(10, 10, 10, 10));
-		Inner_day3.add(daybtn1);
-		Inner_day3.add(daybtn2);
-
+		//Inner_day3.add(daybtn1);
+		//Inner_day3.add(daybtn2);
+		
+		//pdt.setBounds(0,500,100,100);	
+		//pdt.setFont(pdt.getFont().deriveFont(10f));
+		
+		//Inner_day3.setBackground(Color.BLACK);
+		
 		personal_day.setLayout(new BorderLayout());
 		personal_day.add(Inner_day1,BorderLayout.NORTH);
 		personal_day.add(Inner_day2,BorderLayout.CENTER);
+		personal_day.add(Inner_day3,BorderLayout.SOUTH);*/
+		personal_day.setLayout(new BorderLayout());
+		personal_day.add(mangerID2,BorderLayout.NORTH);
+		personal_day.add(Inner_day2,BorderLayout.CENTER);
 		personal_day.add(Inner_day3,BorderLayout.SOUTH);
-
+		
+		
 	}
 
 
@@ -189,14 +219,15 @@ public class Managerpanel{
 			b2.addActionListener(listener);
 			stockbtn1.addActionListener(listener);
 			stockbtn2.addActionListener(listener);
-			//stockbtn3.addActionListener(listener);
+			daybtn1.addActionListener(listener);
 			
 		}
 		
 		public void addTableModelListener(TableModelListener listener) {//테이블에 리스너 부착
 			
-			stocktable.getModel().addTableModelListener(listener);
-			
+			stocktable.getModel().addTableModelListener(listener); //재고관리 리스너
+			//table.getModel().addTableModelListener(listener);//예약현황 리스너
+
 		}
 		
 		/*

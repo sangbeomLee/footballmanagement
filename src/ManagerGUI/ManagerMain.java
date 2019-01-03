@@ -8,6 +8,7 @@ public class ManagerMain {
 		
 		ManagerController app =new ManagerController();
 
+		
 
 	}
 

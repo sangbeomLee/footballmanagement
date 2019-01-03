@@ -23,7 +23,8 @@ public class ManagerController {
 	private PrintWriter outMsg = null;
 	public SubFrame sub;
 	
-	int num=0;//JTable 행 숫자
+	int num=0;//재고관리 JTable 행 숫자
+	int num2=0;//예약현황  JTable 행 숫자
 	boolean state1 = false;
 	boolean state2 = false;
 	
@@ -133,10 +134,12 @@ public class ManagerController {
 						//Manager.stocktable.getValueAt(row,column);
 						//System.out.println(Manager.stocktable.getSelectedRow());
 						
-						System.out.println(Manager.stocktable.getValueAt(Manager.stocktable.getSelectedRow(),0) );
-						Manager.model1.removeRow(Manager.stocktable.getSelectedRow());
+						String send = (String) Manager.stocktable.getValueAt(Manager.stocktable.getSelectedRow(),0);
 						
-						//outMsg.println(gson.toJson(new Message(id,"","","administer","changeproduct"))); //삭제되었다고 서버에 메세지 보내기
+						System.out.println(Manager.stocktable.getValueAt(Manager.stocktable.getSelectedRow(),0) );
+						Manager.model1.removeRow(Manager.stocktable.getSelectedRow());//행 삭제
+						
+						outMsg.println(gson.toJson(new Message(id,send,"","administer","deleteproduct"))); //삭제되었다고 서버에 메세지 보내기
 						
 						num--;
 					}
@@ -163,6 +166,12 @@ public class ManagerController {
 								
 					
 				}
+				else if(e.getSource() == Manager.daybtn1)//에약현황 보기
+				{
+					num2=0;//예약현황 배열 초기화
+					outMsg.println(gson.toJson(new Message(id,"","","administer","addproduct"))); //예약현황 서버에 요청
+				}
+				
 				
 			}
 			
@@ -179,7 +188,8 @@ public class ManagerController {
 				public void tableChanged(TableModelEvent e) {
 					//e.getColumn();//이벤트가 발생한 셀의 칼럼
 					//e.getFirstRow();//이벤트가 발생한 셀의 행
-
+					
+					
 					String input[] = new String[4];//서버에 보낼 string 배열
 					int eventType = e.getType();
 					if(eventType == 0) //eventType( 행이 추가되면 1 , 행이 삭제되면 -1 , 수정되면 0)
@@ -237,7 +247,8 @@ public class ManagerController {
 		
 		
 		Manager.contents= new String[num++][0];
-
+		
+		
 		String arr [] = a.split("#");
 		
 		System.out.println(arr[0]);
@@ -247,6 +258,22 @@ public class ManagerController {
 		row.add(arr[2]);
 		Manager.model1.addRow(row);//테이블에 한행 삽입
 		//appMain2();
+		
+	}
+	
+	public void show_reservation(String a){
+		
+		Manager.contents2 = new String[num2++][0];
+		
+		String arr [] = a.split("#");
+		
+		System.out.println(arr[0]);
+		Vector<String> row = new Vector<String>();
+		row.add(arr[0]); // 0에는 날짜 1에는시간 2에는 예약유무 가능
+		row.add(arr[1]);
+		row.add(arr[2]);
+		Manager.model2.addRow(row);//테이블에 한행 삽입
+		
 		
 	}
 	

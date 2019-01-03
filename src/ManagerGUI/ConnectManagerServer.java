@@ -45,7 +45,7 @@ public class ConnectManagerServer implements Runnable{
       logger = Logger.getLogger(this.getClass().getName());
       this.manager = manager;
       try {
-         socket = new Socket("172.30.1.3",8888);
+         socket = new Socket("172.16.30.242",8888); //연결할 ip주소
          logger.log(INFO,"[Manager]Server 연결 성공!!");
          gson = new Gson();
          inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -78,9 +78,14 @@ public class ConnectManagerServer implements Runnable{
             if(m.msg2.equals("productinfo")) // 관리자에 재고 메세지 받는 조건
             {
             	String a = m.msg1;
-            	//System.out.println(a);
             	macontroll.show_stock(a);
-            	
+            }
+            
+            if(m.msg2.equals("")) // 관리자에 예약 현황 메세지 받는 조건
+            {
+            	String a = m.msg1;
+            	//System.out.println(a);
+            	macontroll.show_reservation(a);
             }
             
             if(m.msg2.equals("finish")) // 관리자 화면에 재고 다뿌려주었다고 완료 메세지 받는 조건
@@ -89,31 +94,42 @@ public class ConnectManagerServer implements Runnable{
             }
             
             
-            if(m.msg2.equals("changed")) // 수정되었다고 서버에서 받아옴
+            if(m.msg2.equals("changed")) //재고 수정되었다고 서버에서 받아옴
             {
                 JOptionPane.showMessageDialog(null,"수정 되었습니다.");
             }
             
-            if(m.msg2.equals("notchanged")) // 수정안되었다고 서버에서 받아옴
+            if(m.msg2.equals("notchanged")) //재고 수정안되었다고 서버에서 받아옴
             {
                 JOptionPane.showMessageDialog(null,"수정 실패하였습니다.","", JOptionPane.WARNING_MESSAGE);
 
             }
             
-            if(m.msg2.equals("addproduct")) // 추가되었다고 서버에서 받아옴
+            if(m.msg2.equals("addproduct")) //재고 추가되었다고 서버에서 받아옴
             {
-            	System.out.println("됨");
+            
                 JOptionPane.showMessageDialog(null,"추가 되었습니다.");
             }
             
-            if(m.msg2.equals("notaddproduc")) // 추가 안되었다고 서버에서 받아옴
+            if(m.msg2.equals("notaddproduc")) //재고 추가 안되었다고 서버에서 받아옴
             {
                 JOptionPane.showMessageDialog(null,"추가 실패하였습니다.","", JOptionPane.WARNING_MESSAGE);
 
             }
             
+            if(m.msg2.equals("deleteproduct")) // 재고 삭제가되었다고 서버에서 받아옴
+            {
+            	
+                JOptionPane.showMessageDialog(null,"삭제 되었습니다.");
+            }
             
+            if(m.msg2.equals("notdeleteproduct")) // 재고 삭제 안되었다고 서버에서 받아옴
+            {
+                JOptionPane.showMessageDialog(null,"삭제가 실패하였습니다.","", JOptionPane.WARNING_MESSAGE);
+
+            }
             
+            //회원쪽
             if(m.msg2.equals("회원가입실패"))
             {
                JOptionPane.showMessageDialog(null,"아이디가 중복됩니다.","", JOptionPane.WARNING_MESSAGE);
