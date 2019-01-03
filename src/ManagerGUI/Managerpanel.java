@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -20,15 +19,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
 
 
 public class Managerpanel{
@@ -38,12 +35,12 @@ public class Managerpanel{
 	JPanel mainpanel = new JPanel();
 	JPanel buttonpanel = new JPanel();
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	
 	JPanel stockPanel = new JPanel();
-	JPanel Inner_stock1 = new JPanel();//stockï¿½Ð³ï¿½ ï¿½ï¿½ï¿½ï¿½
-	JPanel Inner_stock2 = new JPanel();// stockï¿½Ð³ï¿½ ï¿½ï¿½ï¿½ï¿½
-	JPanel Inner_stock3 = new JPanel();//stockï¿½Ð³ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½
-	JPanel Inner_stock4 = new JPanel();//stockï¿½Ð³ï¿½  ï¿½ß¾ï¿½
+	JPanel Inner_stock1 = new JPanel();
+	JPanel Inner_stock2 = new JPanel();
+	JPanel Inner_stock3 = new JPanel();
+	JPanel Inner_stock4 = new JPanel();
 	JPanel btn_label1 = new JPanel();
 	JPanel btn_label2 = new JPanel();
 	JPanel btn_label3 = new JPanel();
@@ -51,53 +48,35 @@ public class Managerpanel{
 	JTextField t1 = new JTextField();
 	JTextField t2 = new JTextField();
 	JTextField t3 = new JTextField();
-	JLabel l1 = new JLabel("ï¿½Ó½ï¿½1");
-	JLabel l2 = new JLabel("ï¿½Ó½ï¿½2");
-	JLabel l3 = new JLabel("ï¿½Ó½ï¿½3");
-	JButton stockbtn1 = new JButton("ï¿½ß°ï¿½");
-	JButton stockbtn2 = new JButton("ï¿½ï¿½ï¿½ï¿½");
-	JButton stockbtn3 = new JButton("ï¿½ï¿½ï¿½ï¿½");
+	JLabel l1 = new JLabel("Ç°¸ñ");
+	JLabel l2 = new JLabel("¼ö·®");
+	JLabel l3 = new JLabel("´ë¿© °¡´É");
+	JButton stockbtn1 = new JButton("Ãß°¡");
+	JButton stockbtn2 = new JButton("»èÁ¦");
+	JButton stockbtn3 = new JButton("¼öÁ¤");
 	JTable stocktable;
 	JScrollPane stock_sc;
 	DefaultTableModel model1;
-	TableCellRenderer renderer;
-    final TableCellEditor editor = new DefaultCellEditor(new JTextField());
-
-
-	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    String header [] = {"Ç°¸í","¼ö·®","´ë¿©°¡´É"};
+    String contents[][];
+	
 	JPanel personal_day = new JPanel();
-	JPanel Inner_day1 = new JPanel();//personal_dayï¿½Ð³ï¿½ ï¿½È¿ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½
-	JPanel Inner_day2 = new JPanel();//personal_dayï¿½ß¾Ó¿ï¿½ ï¿½Ö´ï¿½ ï¿½Ð³ï¿½
-	JPanel Inner_day3 = new JPanel();//personal_day ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½Ð³ï¿½
-	JButton daybtn1 = new JButton("ï¿½Ó½ï¿½1");
-	JButton daybtn2 = new JButton("ï¿½Ó½ï¿½2");
+	JPanel Inner_day1 = new JPanel();//personal_day
+	JPanel Inner_day2 = new JPanel();//personal_day
+	JPanel Inner_day3 = new JPanel();//personal_day 
+	JButton daybtn1 = new JButton("Àç°í°ü¸®");
+	JButton daybtn2 = new JButton("¿¹¾à ÇöÈ²");
 	JComboBox combo = new JComboBox();
 	JTable table;
 	JScrollPane sc;
 
-
-
-	JButton b1 = new JButton("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
-	JButton b2 = new JButton("ï¿½Þ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+	JButton b1 = new JButton("Àç°í °ü¸®");
+	JButton b2 = new JButton("¿¹¾à ÇöÈ²");
 
 
 	public void stock() {
 
-		String header [] = {"ï¿½ï¿½Ç°","ï¿½ï¿½ï¿½ï¿½","ï¿½ë¿©ï¿½ï¿½ï¿½ï¿½"};
-		String contents [][] = new String[3][3];
-		contents[0][0] = "ï¿½ï¿½";
-		contents[1][0] = "ï¿½ï¿½ï¿½ï¿½";
-		contents[2][0] = "ï¿½ï¿½ï¿½ï¿½";
-
-
-		for(int i=0;i<3;i++)//Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		{
-			for(int j=1;j<3;j++)
-			{
-				contents[i][j] = "0";
-			}
-		}
-
+	   contents= new String[0][0];
 
 		model1 = new DefaultTableModel(contents,header);
 
@@ -105,9 +84,10 @@ public class Managerpanel{
 		stock_sc = new JScrollPane(stocktable);
 		Inner_stock4.add(stock_sc);
 
-		renderer = new DefaultTableCellRenderer();
+		//Á¦¹ß
+		//stocktable.getSelectionModel().addListSelectionListener(this);
 
-
+		
 		Inner_stock1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
 		Inner_stock1.setBorder(new EmptyBorder(10, 10, 10, 10));
 		Inner_stock1.add(stockcombo);
@@ -145,7 +125,7 @@ public class Managerpanel{
 
 	public void day() {
 
-		String header [] = {"ï¿½ï¿½Â¥ ï¿½ï¿½ ï¿½Ã°ï¿½","ï¿½Î¿ï¿½","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"};
+		String header [] = {"³¯Â¥","½Ã°£","¿¹¾àÇöÈ²"};
 		String contents [][] = new String[100][3];
 
 		table = new JTable(contents,header);
@@ -171,21 +151,11 @@ public class Managerpanel{
 
 
 
-	Managerpanel(){//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		System.out.println("helllllll");
+	public Managerpanel(){//»ý¼ºÀÚ
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout(0,0));
 
-		//ï¿½×¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù´Â°ï¿½
-		b1.addActionListener(new MyMouseListener2());
-		b2.addActionListener(new MyMouseListener2());
-		stockbtn1.addActionListener(new MyMouseListener2());
-		stockbtn2.addActionListener(new MyMouseListener2());
-		stockbtn3.addActionListener(new MyMouseListener2());
-        editor.addCellEditorListener(new MyMouseListener2());
-
-
-		//buttonpanel.setPreferredSize(new Dimension(1000, 100));
 		buttonpanel.add(b1);
 		buttonpanel.add(b2);
 
@@ -201,122 +171,44 @@ public class Managerpanel{
 		frame.add(buttonpanel,BorderLayout.NORTH);
 		mainpanel.add(stockPanel,"stock");
 
-		//personal_day.setBackground(Color.BLUE);
 		mainpanel.add(personal_day,"personal_day");
 
 		stock();
 		day();
 
-		frame.setTitle("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI");
+		frame.setTitle("°ü¸®ÀÚ È­¸é");
 		frame.setSize(900, 500);
 		//frame.pack();
 		frame.setVisible(true);
 
 	}
-
-	 class MyMouseListener2 implements ActionListener,CellEditorListener{
-
+	
+		public void addButtonActionListener(ActionListener listener) {//¾×¼Ç¸®½º³Ê Ãß°¡ ¸Þ¼Òµå
+			b1.addActionListener(listener);
+			b2.addActionListener(listener);
+			stockbtn1.addActionListener(listener);
+			stockbtn2.addActionListener(listener);
+			stockbtn3.addActionListener(listener);
+			
+		}
+		
+		public void addTableModelListener(TableModelListener listener) {//Å×ÀÌºí¿¡ ¸®½º³Ê ºÎÂø
+			
+			stocktable.getModel().addTableModelListener(listener);
+			
+		}
+		
 		/*
-		 public void keyPressed(KeyEvent e) {
-			 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-				 System.out.println("ï¿½È´ï¿½ï¿½ï¿½");
-			 }
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
 
+				
+		  int sel = table.getSelectedRow();
+		  System.out.println(sel);
+		  
 		 }
-		 */
+		*/
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-		     //System.out.println("action performed");
-			//int row = stocktable.getSelectedRow();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-			//int col = stocktable.getSelectedColumn();
-
-			//stocktable.editCellAt(row, col);
-			//System.out.println(stocktable.getValueAt(row, col));
-
-
-
-			if(e.getSource() == b1)
-			{
-				cardLayout.show(mainpanel, "stock");
-				//System.out.println(stocktable.getColumnName(arg0));
-			}
-			else if(e.getSource() == b2)
-			{
-				cardLayout.show(mainpanel, "personal_day");
-			}
-			else if(e.getSource() == stockbtn2)//ï¿½ï¿½ï¿½ï¿½
-			{
-				if(stocktable.getSelectedRow() == -1)
-				{
-					return;
-				}
-				else
-				{
-					model1.removeRow(stocktable.getSelectedRow());
-				}
-
-			}
-			else if(e.getSource() == stockbtn1)//ï¿½ß°ï¿½
-			{
-				String input[] = new String[4];
-
-				input[0] = t1.getText();
-				input[1] = t2.getText();
-				input[2] = t3.getText();
-				model1.addRow(input);
-
-				t1.setText("");//ï¿½Ø½ï¿½Æ®ï¿½Êµå¿¡ï¿½Ö´ï¿½ ï¿½Û¾ï¿½ ï¿½Ê±ï¿½È­
-				t2.setText("");
-				t3.setText("");
-				System.out.println("ï¿½È´ï¿½ï¿½ï¿½");
-			}
-			else if(e.getSource() == stockbtn3)//ï¿½ï¿½ï¿½ï¿½
-			{
-				/*
-				 int row = stocktable.getSelectedRow();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-				 int col = stocktable.getSelectedColumn();
-
-				 stocktable.setValueAt(t1.getText(),row,col);
-				 stocktable.setValueAt(t2.getText(),row,col);
-				 stocktable.setValueAt(t3.getText(),row,col);
-				 */
-
-			}
-
-
-
-		}//actionPerformed close
-
-		@Override
-		public void editingCanceled(ChangeEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void editingStopped(ChangeEvent e) {
-			//System.out.println(stocktable.getValueAt(row, col));
-			System.out.println("ï¿½È´ï¿½ï¿½ï¿½");
-
-			String value = (String) editor.getCellEditorValue();
-            TableModel ex = stocktable.getModel();
-
-			int row = stocktable.getSelectedRow();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-			int col = stocktable.getSelectedColumn();
-
-
-			ex.setValueAt(value,row, col);
-		}
-
-
-
-
-
-
-	 }//ActionListener close
-
-
-}
+	
+}// Managerpanel close

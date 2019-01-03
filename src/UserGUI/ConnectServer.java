@@ -32,23 +32,24 @@ public class ConnectServer implements Runnable{
 	Thread thread;
 	Gson gson;
 	boolean status;
-
+	String id;
+	
 	public void connectServer(User user) {
 		this.user = user;
 		logger = Logger.getLogger(this.getClass().getName());
-
+		
 		try {
 			socket = new Socket("172.16.30.242",8888);
-			logger.log(INFO,"[Client]Server ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!!");
+			logger.log(INFO,"[Client]Server ¿¬°á ¼º°ø!!");
 			gson = new Gson();
 			inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			outMsg = new PrintWriter(socket.getOutputStream(),true);
 			thread = new Thread(this);
 			thread.start();
-
+			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
-			logger.log(WARNING,"[MultiChatUI]connectServer() Exception ï¿½ß»ï¿½");
+			logger.log(WARNING,"[MultiChatUI]connectServer() Exception ¹ß»ý");
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -58,39 +59,41 @@ public class ConnectServer implements Runnable{
 	public void run() {
 		status = true;
 		String msg;
-
+		
 		m = new Message();
-
+		
 		while(status) {
 			try {
 				msg = inMsg.readLine();
-				m = gson.fromJson(msg, Message.class);//Message Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ø´ï¿½.
-				if(m.msg2.equals("È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½"))
+				m = gson.fromJson(msg, Message.class);//Message Å¬·¡½º Çü½ÄÀ¸·Î º¯È¯ÇØÁØ´Ù.
+				if(m.msg2.equals("È¸¿ø°¡ÀÔ½ÇÆÐ"))
 				{
-					JOptionPane.showMessageDialog(null,"ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ßºï¿½ï¿½Ë´Ï´ï¿½.","", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,"¾ÆÀÌµð°¡ Áßº¹µË´Ï´Ù.","", JOptionPane.WARNING_MESSAGE);
 				}
-				else if(m.msg2.equals("È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½")) {
-					JOptionPane.showMessageDialog(null, "È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌµÇ¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
+				else if(m.msg2.equals("È¸¿ø°¡ÀÔ¼º°ø")) {
+					JOptionPane.showMessageDialog(null, "È¸¿ø°¡ÀÔÀÌµÇ¾ú½À´Ï´Ù");
 				}
-
-				else if(m.msg2.equals("ï¿½Î±ï¿½ï¿½Î¼ï¿½ï¿½ï¿½"))
+				
+				else if(m.msg2.equals("·Î±×ÀÎ¼º°ø"))
 				{
-					JOptionPane.showMessageDialog(null, "ï¿½Î±ï¿½ï¿½Î¼ï¿½ï¿½ï¿½");
+					id = m.id;
+					JOptionPane.showMessageDialog(null, "·Î±×ÀÎ¼º°ø");
 				}
-				else if(m.msg2.equals("ï¿½ï¿½ï¿½Ð¹ï¿½È£ï¿½Ù¸ï¿½"))
+				else if(m.msg2.equals("ºñ¹Ð¹øÈ£´Ù¸§"))
 				{
-					JOptionPane.showMessageDialog(null, "ï¿½ï¿½ï¿½Ð¹ï¿½È£ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½Ï´ï¿½.","" ,JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ºñ¹Ð¹øÈ£°¡ ´Ù¸¨´Ï´Ù.","" ,JOptionPane.WARNING_MESSAGE);
 				}
-
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				logger.log(WARNING,"[User]ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!!");
+				logger.log(WARNING,"[User]¸Þ½ÃÁö ½ºÆ®¸² Á¾·á!!");
 
 				e.printStackTrace();
 			}
 		}
+		
 	}
-
+	
 	public Socket setSocket() {
 		return this.socket;
 	}
@@ -106,4 +109,6 @@ public class ConnectServer implements Runnable{
 	public Gson setGson() {
 		return this.gson;
 	}
+	
 }
+

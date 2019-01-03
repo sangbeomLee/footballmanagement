@@ -255,4 +255,4 @@ public class Manager extends JFrame {
 		Log.addActionListener(listener);
 		Join.addActionListener(listener);
 	}
-	}
+}
