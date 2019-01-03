@@ -125,6 +125,12 @@ public class ManagerController {
 				}
 				else if(e.getSource() == Manager.b3)//휴무일 패널 전환
 				{
+					Manager.model3.setRowCount(0);//jtable 초기화
+
+					
+					outMsg.println(gson.toJson(new Message(id,"","","administer","checkcozyday"))); //예약현황 서버에 요청
+					
+					
 					Manager.frame.setSize(400,400);
 					Manager.cardLayout.show(Manager.mainpanel, "hol");
 				}
@@ -185,13 +191,18 @@ public class ManagerController {
 					String input[] = new String[1];
 					input[0] = Manager.pdt.getText();
 					String send = Manager.pdt.getText();//2019-09-03
+					
+					System.out.println(send+"*******");
 					Manager.model3.addRow(input);
 					
 										
-					//outMsg.println(gson.toJson(new Message(id,send,"","administer",""))); //예약현황 서버에 요청
+					outMsg.println(gson.toJson(new Message(id,send,"","administer","addcozyday"))); //예약현황 서버에 요청
+					
+					
 					Manager.pdt.setText("0000-00-00");
+					
 				}
-				else if(e.getSource() == Manager.pdt)//휴무일 지정 버튼
+				else if(e.getSource() == Manager.pdt)//휴무일 지정 텍스트 필드
 				{
 					System.out.println("되는건가???");
 					Manager.pdt.setText("");
@@ -328,12 +339,11 @@ public class ManagerController {
 		
 		Manager.contents3 = new String[num3++][0];
 		
-		String arr [] = a.split("#");
+		String arr = a;
 		
 		Vector<String> row = new Vector<String>();
-		row.add(arr[0]); // 0에는 날짜 1에는시간 2에는 유저id
-		row.add(arr[1]);
-		row.add(arr[2]);
+		row.add(arr); // 0에는 날짜 1에는시간 2에는 유저id
+
 		Manager.model3.addRow(row);//테이블에 한행 삽입
 	
 	}

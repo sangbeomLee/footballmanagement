@@ -81,64 +81,61 @@ public class ConnectManagerServer implements Runnable{
             	macontroll.show_stock(a);
             }
             
-            if(m.msg2.equals("checkreservation")) // 관리자에 예약 현황 메세지 받는 조건
+            else if(m.msg2.equals("checkreservation")) // 관리자에 예약 현황 메세지 받는 조건
             {
             	String a = m.msg1;
             	macontroll.show_reservation(a);
             }
             
-            if(m.msg2.equals("finish")) // 관리자 화면에 재고 다뿌려주었다고 완료 메세지 받는 조건
+            else if(m.msg2.equals("finish")) // 관리자 화면에 재고 다뿌려주었다고 완료 메세지 받는 조건
             {
             	macontroll.appMain2();
             }
             
             
-            if(m.msg2.equals("changed")) //재고 수정되었다고 서버에서 받아옴
+            else if(m.msg2.equals("changed")) //재고 수정되었다고 서버에서 받아옴
             {
                 JOptionPane.showMessageDialog(null,"수정 되었습니다.");
             }
             
-            if(m.msg2.equals("notchanged")) //재고 수정안되었다고 서버에서 받아옴
+            else if(m.msg2.equals("notchanged")) //재고 수정안되었다고 서버에서 받아옴
             {
                 JOptionPane.showMessageDialog(null,"수정 실패하였습니다.","", JOptionPane.WARNING_MESSAGE);
 
             }
             
-            if(m.msg2.equals("addproduct")) //재고 추가되었다고 서버에서 받아옴
+            else if(m.msg2.equals("addproduct")) //재고 추가되었다고 서버에서 받아옴
             {
             
                 JOptionPane.showMessageDialog(null,"추가 되었습니다.");
             }
             
-            if(m.msg2.equals("notaddproduc")) //재고 추가 안되었다고 서버에서 받아옴
+            else if(m.msg2.equals("notaddproduc")) //재고 추가 안되었다고 서버에서 받아옴
             {
                 JOptionPane.showMessageDialog(null,"추가 실패하였습니다.","", JOptionPane.WARNING_MESSAGE);
 
             }
             
-            if(m.msg2.equals("deleteproduct")) // 재고 삭제가되었다고 서버에서 받아옴
+            else if(m.msg2.equals("deleteproduct")) // 재고 삭제가되었다고 서버에서 받아옴
             {
             	
                 JOptionPane.showMessageDialog(null,"삭제 되었습니다.");
             }
             
-            if(m.msg2.equals("notdeleteproduct")) // 재고 삭제 안되었다고 서버에서 받아옴
+            else if(m.msg2.equals("notdeleteproduct")) // 재고 삭제 안되었다고 서버에서 받아옴
             {
                 JOptionPane.showMessageDialog(null,"삭제가 실패하였습니다.","", JOptionPane.WARNING_MESSAGE);
 
             }
-            
-            if(m.msg2.equals("")) // 휴무일이 지정 서버에서 받아옴
-            {
-                JOptionPane.showMessageDialog(null,"삭제 되었습니다.");
-            }
-            
-            if(m.msg2.equals("")) // 휴무일 현황 메세지 받는 조건
+            else if(m.msg2.equals("checkcozyday")) // 휴무일 현황 메세지 받는 조건
             {
             	String a = m.msg1;
             	macontroll.hol_sh(a);
             }
-            
+            else if(m.msg2.equals("cozyday")) // 휴무일 현황 메세지 받는 조건
+            {
+            	JOptionPane.showMessageDialog(null,"추가 되었습니다.");
+            }
             
             
             //회원쪽 
