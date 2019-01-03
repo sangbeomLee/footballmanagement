@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
@@ -35,6 +38,8 @@ public class ConnectThread extends Thread {
 	public ConnectThread() {
 		logger = Logger.getLogger(this.getClass().getName());
 		logger.info(this.getName() + "생성됨!!");
+
+	
 	}
 
 	public void run() {
@@ -44,7 +49,7 @@ public class ConnectThread extends Thread {
 			//logger.info("[try스레드 들어옴]!!");
 			inMsg = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			outMsg = new PrintWriter(s.getOutputStream(), true);
-
+			
 			while (status) {
 				logger.info("[while스레드 들어옴]!!");
 				// 수신된 메시지를 msg 변수에 저장
@@ -54,6 +59,7 @@ public class ConnectThread extends Thread {
 
 				// 파싱된 문자열 배열의 두 번째 요소값
 				// 로그아웃 메시지
+				System.out.println(m.id + "#" +m.msg2 + "#" + m.type1 + "#" + m.type2);
 				if (m.type1.equals("customer")) {
 					logger.info("[커스토머  들어옴]!!");
 					if (m.type2.equals("register")) {
@@ -130,6 +136,7 @@ public class ConnectThread extends Thread {
 							outMsg.println(gson.toJson(new Message(m.id, send, "productinfo", "administer", "server")));
 							logger.info("[프로덕트 내용 전송중..]!!");
 						}
+						outMsg.println(gson.toJson(new Message(m.id, "finishSetproduct", "finish", "administer", "server")));
 						logger.info("[프로덕트 내용 완료]!!");
 					}
 				}

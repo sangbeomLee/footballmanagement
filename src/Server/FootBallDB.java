@@ -49,6 +49,7 @@ public class FootBallDB {
 		}
 	}
 
+	//풋살장 내역조회
 	public String fieldCheck() {
 
 		sql = "select fName from footballfield";
@@ -170,18 +171,19 @@ public class FootBallDB {
 			return false;
 		}
 	}
-	
+	//풋살장 이름을 풋살장 id로 바꿔주는 함수
 	public int changeF(String fName) {
 		sql = "select fID,fName from footballfield";
 		
 		int fID = 0;
-		
+		System.out.println("fName : " + fName);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
+				
 				if(fName.equals(rs.getString("fName"))) {
 					fID = rs.getInt("fID");
 					return fID;
@@ -191,6 +193,31 @@ public class FootBallDB {
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.warning("[footballfieldchangeF] 문제!!");
+		}
+		return fID;
+	}
+	//administer 의 fID찾는 함수
+	public int findFID(String cid) {
+		sql = "select fID,aID from administer";
+		
+		int fID = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
+				
+				if(cid.equals(rs.getString("aID"))) {
+					fID = rs.getInt("fID");
+					return fID;
+				}
+			}
+			logger.info("[findFID] 성공!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[findFID] 문제!!");
 		}
 		return fID;
 	}
@@ -218,9 +245,9 @@ public class FootBallDB {
 		return cID;
 	}
 
-	// 전체상품을 가져온다.
+	// administer 아이디를 가져온다.
 	public ArrayList<String> getAllAdministerID() {
-		sql = "select cID from administer";
+		sql = "select aID from administer";
 
 		// 전체 검색 데이터를 전달하는 ArrayList
 		ArrayList<String> aID = new ArrayList<String>();
@@ -308,11 +335,11 @@ public class FootBallDB {
 	}
 
 	public ArrayList<String> getProduct(Message m) {
-		// fid 바꾼다.
-		int fID = changeF(m.type2);
+		// fid 바꾼다.1더해준다.
+		int fID = findFID(m.id);
 		
-		sql = "select pName,pQuntity,pRepair from product where " + fID;
-
+		sql = "select pName,pQuntity,pRepair from product where fID = " + fID;
+		System.out.println(sql);
 		// 전체 검색 데이터를 전달하는 ArrayList
 		ArrayList<String> product = new ArrayList<String>();
 
@@ -338,13 +365,157 @@ public class FootBallDB {
 
 	}
 	
+	//datemanage 데이터 베이스에 저장하기위한 함수
+	public void setDate(int id, String date, String time, int fID, String week) {
+		try {
+			sql = "INSERT INTO datemanage values(?, ?, ?, ?, ?)";
+			// pstmt객체 생성, SQL 문장 저장
+			pstmt = conn.prepareStatement(sql);
+
+			// pstmt.set
+			pstmt.setInt(1, id);
+			pstmt.setString(2, date);
+			pstmt.setString(3, time);
+			pstmt.setInt(4, fID);
+			pstmt.setString(5, week);
+
+			// SQL문 전송
+			pstmt.executeUpdate();
+
+			//logger.info("[setDate 완료!!]");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("[setDate 실패!!]");
+		}
+	}
+	//날짜를 알기위한 함수
+	public ArrayList<String> getDate() {
+		//년-월-일 순으로 나오게 했다.
+		sql = "select date_format(dDate,'%Y-%m-%d') as date from datemanage";
+		ArrayList<String> date = new ArrayList<String>();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				// 안에있는 dDate 를 넣는다.
+				date.add(rs.getString("date"));
+			}
+			
+			logger.info("[getDate] 성공!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[getDate] 문제!!");
+		}
+		return date;
+	}
+	//ID값이 1이 있는지를 알기 위한 함수.
+	public int getMinimumDateID() {
+		sql = "select dID from datemanage ORDER BY dID asc LIMIT 1;";
+		
+		int dID;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			dID = rs.getInt("dID");
+			
+			logger.info("[getMinimumDateID] 성공!!");
+			return dID;
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("[getMinimumDateID] 실패!!");
+		}
+		logger.info("[getMinimumDateID] 실패!!");
+		return -1;
+	}
+	//마지막 dateID값을 알기 위한 함수
+	public int getMaxmumDateID() {
+		sql = "select dID from datemanage ORDER BY dID DESC LIMIT 1;";
+		
+		int dID;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			dID = rs.getInt("dID");
+			
+			logger.info("[getMaxmumDateID] 성공!!");
+			return dID;
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("[getMaxmumDateID] 실패!!");
+		}
+		logger.info("[getMinimumDateID] 실패!!");
+		return -1;
+	}
+
+	//오늘 날짜면 DB data 지우는 함수.
+	public void deleteDateWeek(String today) {
+		String day = today;
+		//System.out.println(day);
+		try {
+			//sql
+			sql = "DELETE FROM datemanage where dID<140 and dDate <" + "'"+today+"'";
+			// pstmt객체 생성, SQL 문장 저장
+			pstmt = conn.prepareStatement(sql);
+			// SQL문 전송
+			pstmt.executeUpdate();
+
+			logger.info("[deleteDateWeek 완료!!]");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("[deleteDateWeek 실패!!]");
+		}
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	//날짜가 지날때마다 자동으로 넣어주는 함수.
+	public void addDate(String date) {
+		int id =0;
+		//int minimum = getMinimumDateID();
+
+		//시간 넣기.
+		ArrayList<String> times = new ArrayList<String>();
+		times.add("10시-12시");
+		times.add("12시-14시");
+		times.add("14시-16시");
+		times.add("16시-18시");
+		times.add("18시-20시");
+		
+		//id값 자동생성!!
+		for (int i = 1; i <= 4; i++) {
+			for (int j = 0; j < 5; j++) {
+				setDate(id, date, times.get(j), i, "");
+			}
+		}
+		logger.info("[addDate 성공!!]");
+
+	}
+	//1주일 후 날짜가 있는지 확인.
+	public boolean getWeekDdate(String after) {
+
+		sql = "select dDate from datemanage where dDate>=" + "'"+ after+"'";
+		ArrayList<String> date = new ArrayList<String>();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				// 안에있는 dDate 를 넣는다.
+				date.add(rs.getString("date"));
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[getDdate] 문제!!");
+		}
+		
+		if(date.isEmpty()) {
+			System.out.println(date);
+			return false;
+		}
+		else {
+			
+			return true;
+		}
+	}
+
 }
