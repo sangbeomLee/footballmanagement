@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -39,11 +40,11 @@ public class ConnectThread extends Thread {
 		logger = Logger.getLogger(this.getClass().getName());
 		logger.info(this.getName() + "생성됨!!");
 
-	
 	}
 
 	public void run() {
 		status = true;
+		setDdata();
 		//logger.info("[스레드 들어옴]!!");
 		try {
 			//logger.info("[try스레드 들어옴]!!");
@@ -81,6 +82,18 @@ public class ConnectThread extends Thread {
 						if(fbdb.checkCustomerLogin(m.id, m.msg1) == 1) {
 							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 성공했습니다.", "로그인성공", "customer", "server")));
 							logger.info("[로그인 성공]!!");
+
+							String fname = fbdb.fieldCheck();
+							outMsg.println(gson.toJson(new Message("", fname, "풋살장이름", "fname", "customer")));
+							logger.info("[고객 풋살장 내역 완료!]");
+//							// 보내는 부분 정보
+//							ArrayList<String> items = fbdb.sendDateInfo();
+//							for (String send : items) {
+//								outMsg.println(gson.toJson(new Message(m.id, send, "dateinfo", "customer", "server")));
+//							}
+//							outMsg.println(gson.toJson(new Message(m.id, "finishSetproduct", "dfinish", "customer", "server")));
+//							logger.info("[Date 내용 완료]!!");
+
 						}
 						else if(fbdb.checkCustomerLogin(m.id, m.msg1) == 0) {
 							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 실패했습니다.", "비밀번호다름", "customer", "server")));
@@ -90,6 +103,16 @@ public class ConnectThread extends Thread {
 							outMsg.println(gson.toJson(new Message(m.id, "님이 로그인에 실패했습니다.", "로그인실패", "customer", "server")));
 							logger.info("[로그인 실패!!");
 						}
+					}else if(m.type2.equals("finddate")) {
+						String send = fbdb.sendFieldDateInfo(m);
+						outMsg.println(gson.toJson(new Message("", send, "fdate", "customer", "server")));
+						logger.info("[고객 풋살장 date 내역 완료!]");
+					}
+					else if(m.type2.equals("findtime")) {
+						System.out.println(m.id + "#" + m.msg1 + "#" + m.msg2);
+						String send = fbdb.sendFieldTimeDateInfo(m);
+						outMsg.println(gson.toJson(new Message("", send, "ftime", "customer", "server")));
+						logger.info("[고객 풋살장 time 내역 완료!]");
 					}
 				}
 				else if (m.type1.equals("administer")) {
@@ -139,6 +162,41 @@ public class ConnectThread extends Thread {
 						outMsg.println(gson.toJson(new Message(m.id, "finishSetproduct", "finish", "administer", "server")));
 						logger.info("[프로덕트 내용 완료]!!");
 					}
+					//수정하기
+					else if(m.type2.equals("changeproduct")) {
+						//db에서 수정
+						if(fbdb.sendProductChange(m)) {
+							outMsg.println(gson.toJson(new Message(m.id, "", "changed","administer","server")));
+							logger.info("[수정 완료]!!");
+						}
+						else {
+							outMsg.println(gson.toJson(new Message(m.id, "", "notchanged","administer","server")));
+							logger.info("[수정 실패]!!");
+						}
+					}
+					//물품 추가
+					else if(m.type2.equals("addproduct")) {
+						//db에서 수정
+						if(fbdb.addProduct(m)) {
+							outMsg.println(gson.toJson(new Message(m.id, "", "addproduct","administer","server")));
+							logger.info("[추가 완료]!!");
+						}
+						else {
+							outMsg.println(gson.toJson(new Message(m.id, "", "notaddproduct","administer","server")));
+							logger.info("[추가 실패]!!");
+						}
+					}
+					else if(m.type2.equals("deleteproduct")) {
+						if(fbdb.deleteProduct(m)) {
+							outMsg.println(gson.toJson(new Message(m.id, "", "deleteproduct","administer","server")));
+							logger.info("[삭제 완료]!!");
+						}
+						else {
+							outMsg.println(gson.toJson(new Message(m.id, "", "notdeleteproduct","administer","server")));
+							logger.info("[삭제 실패]!!");
+						}
+					}
+					
 				}
 				else{
 					//잘못된 접근입니다 띄우기
@@ -163,4 +221,27 @@ public class ConnectThread extends Thread {
 		this.fbdb = db;
 	}
 
+	//날짜 자동추가
+	void setDdata() {
+		//누가 들어오면 확인한다.
+		// 오늘날짜 확인.
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+		Date currentTime = new Date();
+		// 오늘날짜
+		String mTime = mSimpleDateFormat.format(currentTime);
+		// 날짜 더해주기
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(currentTime);
+		cal.add(Calendar.DATE, 6); // 날짜 더하기
+		String addTime = mSimpleDateFormat.format(cal.getTime());
+		// System.out.println("더한날짜 확인 : " + addTime);
+
+		if (fbdb.getWeekDdate(addTime)) {
+			System.out.println("이번주거 있다.");
+		} else {
+			System.out.println("이번주마지막거 없다 추가해라");
+			fbdb.deleteDateWeek(mTime);
+			fbdb.addDate(addTime);
+		}
+	}
 }
