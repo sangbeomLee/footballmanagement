@@ -7,14 +7,14 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
 
-public class User extends JFrame implements ActionListener{
+public class User extends JFrame {
 
 		public JLabel Title;
 		public JTextField ID,Pass;
 		public JButton Log,Join,Find;
 		EtchedBorder eborder;
 		public SubFrame sub;
-		public User(){
+    	public User(){
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
 			getContentPane().setBackground(Color.WHITE);
@@ -106,7 +106,6 @@ public class User extends JFrame implements ActionListener{
 			Join.setBounds(380,423,130,30);
 			
 			
-			Join.addActionListener(this);
 			
 			
 			//Log.addActionListener(this);
@@ -124,7 +123,7 @@ public class User extends JFrame implements ActionListener{
 			super.setVisible(true);
 	}
 	
-	public void actionPerformed(ActionEvent e) {
+    	/*	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if(o==Join) {
 			//sub.setSize(100,100);
@@ -134,7 +133,7 @@ public class User extends JFrame implements ActionListener{
 			
 		}
 	
-	}
+	}*/
 		
 	public class SubFrame extends Frame{
 		public JTextField IDin,Passin,Passrein,Name,Mail,Number;
@@ -228,6 +227,6 @@ public class User extends JFrame implements ActionListener{
 	public void addButtonActionListener(ActionListener listener) {
 		sub.Signup.addActionListener(listener);
 		Log.addActionListener(listener);
-
+		Join.addActionListener(listener);
 	}
 	}

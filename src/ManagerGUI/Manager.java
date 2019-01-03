@@ -127,17 +127,7 @@ public class Manager extends JFrame {
 			super.setVisible(true);
 	}
 	
-	/*public void actionPerformed(ActionEvent e) {
-		Object o = e.getSource();
-		if(o==Join) {
-			sub.setLocation(200, 50);
-			sub.setVisible(true);
-			
-			
-		}
-	
-	}*/
-		
+
 	public class SubFrame extends Frame{
 		public JTextField IDin,Passin,Passrein,Name,Mail,Number;
 		public JComboBox<String> Field;
@@ -225,12 +215,7 @@ public class Manager extends JFrame {
 			add(Signup);
 			add(Field);
 			add(LField);
-			
-			//id = IDin.getText();
-			//msg1 = Pass.getText();
-			//msg2 = Name.getText()+"#"+Mail.getText()+"#"+Number.getText();
-			//type1 = "customer";
-			//type2 = "register";
+		
 			
 			addWindowListener(new WindowAdapter() {
 			

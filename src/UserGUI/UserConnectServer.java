@@ -21,10 +21,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-public class ConnectServer implements Runnable{
+public class UserConnectServer implements Runnable{
 	public User user;
+    public Userreserve reserve;
 	private BufferedReader inMsg = null;
 	private PrintWriter outMsg = null;
+	String fname;
 	String outm;
 	Socket socket = null;
 	Message m;
@@ -33,8 +35,9 @@ public class ConnectServer implements Runnable{
 	Gson gson;
 	boolean status;
 	
-	public void connectServer(User user) {
+	public void connectServer(User user, Userreserve reserve) {
 		this.user = user;
+		this.reserve = reserve;
 		logger = Logger.getLogger(this.getClass().getName());
 		
 		try {
@@ -81,6 +84,19 @@ public class ConnectServer implements Runnable{
 				{
 					JOptionPane.showMessageDialog(null, "비밀번호가 다릅니다.","" ,JOptionPane.WARNING_MESSAGE);
 				}
+	    		/* 
+	    		  조회
+	    		  else if(m.type1.equals("fname"))
+		            {
+		            	//System.out.println(m.msg1);
+		            	fname = m.msg1;
+		            	String[] frameArray = fname.split("#");
+		            	System.out.println(frameArray[0]);
+		            	
+		            	for(int i=0;i<frameArray.length;i++)
+						reserve.days.addItem(frameArray[i]);
+					}*/
+				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

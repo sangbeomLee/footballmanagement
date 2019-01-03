@@ -151,7 +151,7 @@ public class Managerpanel{
 		table = new JTable(contents,header);
 		sc = new JScrollPane(table);
 
-		Inner_day1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
+	Inner_day1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
 		Inner_day1.setBorder(new EmptyBorder(10, 10, 10, 10));
 		Inner_day1.add(combo,BorderLayout.WEST);
 		

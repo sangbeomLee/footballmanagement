@@ -27,7 +27,6 @@ public class ConnectManagerServer implements Runnable{
    private BufferedReader inMsg = null;
    private PrintWriter outMsg = null;
    String fname;
-   String outm;
    Socket socket = null;
    Message m;
    Logger logger;
@@ -64,7 +63,8 @@ public class ConnectManagerServer implements Runnable{
       
       while(status) {
          try {
-            msg = inMsg.readLine();
+         
+        	msg = inMsg.readLine();
             m = gson.fromJson(msg, Message.class);//Message 클래스 형식으로 변환해준다.
             System.out.println(m.msg1);
             if(m.msg2.equals("회원가입실패"))
@@ -86,7 +86,7 @@ public class ConnectManagerServer implements Runnable{
             }
             else if(m.type1.equals("fname"))
             {
-            	System.out.println(m.msg1);
+            	//System.out.println(m.msg1);
             	fname = m.msg1;
             	String[] frameArray = fname.split("#");
             	System.out.println(frameArray[0]);
