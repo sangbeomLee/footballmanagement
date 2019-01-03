@@ -109,10 +109,20 @@ public class ConnectThread extends Thread {
 						logger.info("[고객 풋살장 date 내역 완료!]");
 					}
 					else if(m.type2.equals("findtime")) {
-						System.out.println(m.id + "#" + m.msg1 + "#" + m.msg2);
 						String send = fbdb.sendFieldTimeDateInfo(m);
 						outMsg.println(gson.toJson(new Message("", send, "ftime", "customer", "server")));
 						logger.info("[고객 풋살장 time 내역 완료!]");
+					}
+					else if(m.type2.equals("reserve")) {
+						if(fbdb.reserveCustomer(m)) {
+							outMsg.println(gson.toJson(new Message("m.id", "", "reserve", "customer", "server")));
+							logger.info("[고객 풋살장 reserve 내역 완료!]");
+						}
+						else {
+							outMsg.println(gson.toJson(new Message("m.id", "", "notreserve", "customer", "server")));
+							logger.info("[고객 풋살장 reserve 내역 실패!!]");
+						}
+						
 					}
 				}
 				else if (m.type1.equals("administer")) {
@@ -196,6 +206,32 @@ public class ConnectThread extends Thread {
 							logger.info("[삭제 실패]!!");
 						}
 					}
+					//예약현황
+					else if(m.type2.equals("checkreservation")) {
+						ArrayList<String> send = fbdb.administerR(m); 
+						for(String temp : send) {
+							outMsg.println(gson.toJson(new Message(m.id, temp, "checkreservation","administer","server")));
+						}
+						logger.info("[예약현황 완료]!!");
+					}
+					//휴무일 관리.
+					else if(m.type2.equals("addcozyday")) {
+						if(fbdb.setDayOfWeek(m)) {
+							outMsg.println(gson.toJson(new Message(m.id, "", "cozyday","administer","server")));
+							logger.info("[cozyday 완료]!!");
+						}
+						else {
+							outMsg.println(gson.toJson(new Message(m.id, "", "notcozyday","administer","server")));
+							logger.info("[cozyday 실패]!!");
+						}
+					}
+					else if(m.type2.equals("checkcozyday")) {
+						ArrayList<String> send = fbdb.checkcozyday(m); 
+						for(String temp : send) {
+							outMsg.println(gson.toJson(new Message(m.id, temp, "checkcozyday","administer","server")));
+						}
+						logger.info("[checkcozyday 완료]!!");
+					}
 					
 				}
 				else{
@@ -237,9 +273,10 @@ public class ConnectThread extends Thread {
 		// System.out.println("더한날짜 확인 : " + addTime);
 
 		if (fbdb.getWeekDdate(addTime)) {
-			System.out.println("이번주거 있다.");
+			//System.out.println("이번주거 있다.");
+			//fbdb.deleteDateWeek(mTime);
 		} else {
-			System.out.println("이번주마지막거 없다 추가해라");
+			//System.out.println("이번주마지막거 없다 추가해라");
 			fbdb.deleteDateWeek(mTime);
 			fbdb.addDate(addTime);
 		}

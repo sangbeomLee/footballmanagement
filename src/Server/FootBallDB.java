@@ -94,12 +94,11 @@ public class FootBallDB {
 			}
 			;
 		}
-		System.out.println(msg2);
 		// 중복검사를 마친(같은 id값이 없는)메시지로 진행한다.
 		// msg를 나눈다 (이름/이메일/전화번호)
 
 		String[] msgArray = msg2.split("#");
-		System.out.println(id + pw + msgArray[0] + msgArray[1] + msgArray[2]);
+		
 		try {
 
 			sql = "INSERT INTO customer values(?, ?, ?, ?, ?)";
@@ -141,16 +140,16 @@ public class FootBallDB {
 			}
 			;
 		}
-		System.out.println(msg2);
+		
 		// 중복검사를 마친(같은 id값이 없는)메시지로 진행한다.
 		// msg를 나눈다 (이름/이메일/전화번호)
 
 		String[] msgArray = msg2.split("#");
 		int fID = changeF(msgArray[3]);
 		// int fID = Integer.parseInt(msgArray[3])''
-		System.out.println(id + "#" + pw + "#" + msgArray[0] + "#" + msgArray[1] + "#" + msgArray[2] + "#" + fID);
+		
 		try {
-			System.out.println();
+			
 			sql = "INSERT INTO administer values(?, ?, ?, ?, ?, ?)";
 			// pstmt객체 생성, SQL 문장 저장
 			pstmt = conn.prepareStatement(sql);
@@ -180,7 +179,7 @@ public class FootBallDB {
 		sql = "select fID,fName from footballfield";
 
 		int fID = 0;
-		System.out.println("fName : " + fName);
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -343,7 +342,7 @@ public class FootBallDB {
 		int fID = findFID(m.id);
 
 		sql = "select pName,pQuntity,pRepair from product where fID = " + fID;
-		System.out.println(sql);
+		
 		// 전체 검색 데이터를 전달하는 ArrayList
 		ArrayList<String> product = new ArrayList<String>();
 
@@ -357,7 +356,7 @@ public class FootBallDB {
 				temp = temp + rs.getString("pName");
 				temp = temp + "#" + Integer.toString(rs.getInt("pQuntity"));
 				temp = temp + "#" + Integer.toString(rs.getInt("pRepair"));
-				System.out.println(temp);
+				
 				product.add(temp);
 			}
 			logger.info("[getProduct] 성공!!");
@@ -459,10 +458,10 @@ public class FootBallDB {
 	// 오늘 날짜면 DB data 지우는 함수.
 	public void deleteDateWeek(String today) {
 		String day = today;
-		// System.out.println(day);
+		
 		try {
 			// sql
-			sql = "DELETE FROM datemanage where dID<140 and dDate <" + "'" + day + "'";
+			sql = "DELETE FROM datemanage where dID>0 and dDate <" + "'" + day + "'";
 			// pstmt객체 생성, SQL 문장 저장
 			pstmt = conn.prepareStatement(sql);
 			// SQL문 전송
@@ -511,13 +510,14 @@ public class FootBallDB {
 				date.add(rs.getString("dDate"));
 			}
 
+			logger.warning("[getDdate] 실행!!");
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.warning("[getDdate] 문제!!");
 		}
 
-		if (date.size() > 0) {
-			// System.out.println(date);
+		if (date.size() > 1) {
+			
 			return true;
 		} else {
 			return false;
@@ -560,7 +560,7 @@ public class FootBallDB {
         String dDate = "";
        
         try {
-               sql = "select DISTINCT date_format(dm.dDate,'%Y-%m-%d') as dDate from datemanage dm where dm.fID = ? and dm.dID <> 1";
+               sql = "select DISTINCT date_format(dm.dDate,'%Y-%m-%d') as dDate from datemanage dm where dm.fID = ? and dm.dID <> 1 and dm.dDayOfWeek = 0";
                pstmt = conn.prepareStatement(sql);
   
                // pstmt.set
@@ -588,7 +588,7 @@ public class FootBallDB {
 		String choicedate = m.msg1;
 		int fID = changeF(m.msg2);
 		String dDate = "";
-		System.out.println(choicedate + "#" + fID);
+		
 		try {
 			sql = "select dm.dTime from datemanage dm where dm.dID <> 1 and dm.fID = ? and dm.dDate = ? and dm.dID not in (select dID from reservation)";
 			
@@ -597,7 +597,7 @@ public class FootBallDB {
 			pstmt.setInt(1, fID);
 			pstmt.setString(2, choicedate);
 			
-			//System.out.println(pstmt.toString());
+			
 			// SQL문 전송
 			rs = pstmt.executeQuery();
 			rs.next();
@@ -610,6 +610,7 @@ public class FootBallDB {
 			logger.info("[sendFieldTimeDateInfo] 성공!!");
 		} catch (Exception e) {
 			// TODO: handle exception
+			
 			logger.warning("[sendFieldTimeDateInfo] 문제!!");
 		}
 		return dDate;
@@ -617,7 +618,7 @@ public class FootBallDB {
 	}
 
 	//administer 물품 수정
-	public boolean sendProductChange(Message m) {
+	public synchronized boolean sendProductChange(Message m) {
 		/// UPDATE tablename SET filedA='456' WHERE test='123'
 		//이사람의 fid를 알아야한다. 함수로 만들자
 		
@@ -648,9 +649,9 @@ public class FootBallDB {
 		}
 	}
 	//물품 추가
-	public boolean addProduct(Message m) {
+	public synchronized boolean addProduct(Message m) {
 		// id, passward 옮겨놓는다.
-		System.out.println(m.msg1);
+		
 		String id = m.id;
 		String msg1 = m.msg1;
 		String array[] = msg1.split("#");
@@ -682,12 +683,11 @@ public class FootBallDB {
 		}
 	}
 	//물품 지우기
-	public boolean deleteProduct(Message m) {	
+	public synchronized boolean deleteProduct(Message m) {	
 		//정보
 		String pName = m.msg1;
 		int fID 	 = findFID(m.id);
-		System.out.println("pname : " + pName + "###" + fID);
-		// System.out.println(day);
+	
 		try {
 			// sql
 			sql = "delete from product where pID>0 and fID = ? and pName = ?";
@@ -708,4 +708,181 @@ public class FootBallDB {
 		}
 	}
 
+	//관리자 예약상황
+	public ArrayList<String> administerR(Message m) {
+	
+		int fID = findFID(m.id);
+
+		sql = "select date_format(dm.dDate,'%Y-%m-%d') as dDate,dm.dTime as dTime,rv.cID as cID from datemanage dm,reservation rv where rv.dID = dm.dID and dm.dID <> 1 and rv.fid = " + fID + " ORDER BY dDate";
+		
+		// 전체 검색 데이터를 전달하는 ArrayList
+		ArrayList<String> reserveinfo = new ArrayList<String>();
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
+				String temp = "";
+				temp = temp + rs.getString("dDate");
+				temp = temp + "#" + rs.getString("dTime");
+				temp = temp + "#" + rs.getString("cID");
+				reserveinfo.add(temp);
+			}
+			
+			logger.info("[administerR] 성공!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[administerR] 문제!!");
+		}
+		return reserveinfo;
+
+	}
+	//유저 예약 완료!
+	public synchronized boolean reserveCustomer(Message m) {
+		// id, passward 옮겨놓는다.
+		String id = m.id;
+		String msg1 = m.msg1;
+		String msg2 = m.msg2;
+		String array[] = msg2.split("#");
+		
+		int fID  = changeF(array[0]);
+		String Date = array[1];
+		String Time = array[2];
+		int dID = findDID(Date,Time,fID);
+		//고사이 누가 예약한것
+		
+		if(!compareDID(dID)) {
+			return false;
+		}
+		try {
+			sql = "INSERT INTO reservation VALUES (?, ?, ?, ?, ?);";
+			// pstmt객체 생성, SQL 문장 저장
+			pstmt = conn.prepareStatement(sql);
+
+			// pstmt.set
+			pstmt.setInt(1, 0);
+			pstmt.setString(2, id);
+			pstmt.setInt(3, fID);
+			pstmt.setInt(4, dID);
+			pstmt.setString(5, msg1);
+			// SQL문 전송
+			
+			pstmt.executeUpdate();
+
+			logger.info("[reserveCustomer 완료!!]");
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("[reserveCustomer 실패!!]");
+			return false;
+		}
+	}
+	//dID찾는다.
+	public int findDID(String dDate, String dTime, int fID) {
+		int dID = -1;
+		try {
+			sql = "select dID from datemanage where dDate = ? and dTime = ? and fID = ? ";
+			pstmt = conn.prepareStatement(sql);
+
+			// pstmt.set
+			pstmt.setString(1, dDate);
+			pstmt.setString(2, dTime);
+			pstmt.setInt(3, fID);
+
+			// SQL문 전송
+			rs = pstmt.executeQuery();
+			rs.next();
+			dID = rs.getInt("dID");
+			logger.info("[findDID] 성공!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[findDID] 문제!!");
+		}
+		return dID;
+
+	}
+
+	//dID reservation 과 비교한다.
+	public boolean compareDID(int dID) {
+		int check = 0;
+		try {
+			sql = "select dID from reservation where dID = ?";
+			// pstmt객체 생성, SQL 문장 저장
+			pstmt = conn.prepareStatement(sql);
+
+			// pstmt.set
+			pstmt.setInt(1, dID);
+
+			// SQL문 전송
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				logger.info("[compareDID 실패[중복]!!]");
+				return false;
+			}
+			else {
+				logger.info("[compareDID 완료!!]");
+				return true;
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("[compareDID 실패!!]");
+			return false;
+		}
+	}
+	//dDayOfWeek 추가하기.휴무일
+	public boolean setDayOfWeek(Message m) {
+		
+		String dDate = m.msg1;
+	
+		int fID 	 = findFID(m.id);
+		try {
+			sql = "update datemanage set dDayOfWeek = 1 where dDate = ? and fID = ?";
+			// pstmt객체 생성, SQL 문장 저장
+			pstmt = conn.prepareStatement(sql);
+		
+			// pstmt.set
+			pstmt.setString(1, dDate);
+			pstmt.setInt(2, fID);
+			// SQL문 전송
+			pstmt.executeUpdate();
+
+			logger.info("[setDayOfWeek 완료!!]");
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("[setDayOfWeek 실패!!]");
+			return false;
+		}
+	}
+	//휴일 뿌려주기
+	public ArrayList<String> checkcozyday(Message m){
+		int fID = findFID(m.id);
+
+		sql = "select distinct date_format(dm.dDate,'%Y-%m-%d') as dDate from datemanage dm where dm.dID <> 1 and dm.fid = ? and dm.dDayOfWeek = 1";
+		
+		// 전체 검색 데이터를 전달하는 ArrayList
+		ArrayList<String> cozyday = new ArrayList<String>();
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, fID);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// 프로덕트에 값을 넣고 데이터 어레이리스트에 넣는다.
+				String temp = rs.getString("dDate");
+				cozyday.add(temp);
+			}
+			logger.info("[checkcozyday] 성공!!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.warning("[checkcozyday] 문제!!");
+		}
+		return cozyday;
+
+	}
 }

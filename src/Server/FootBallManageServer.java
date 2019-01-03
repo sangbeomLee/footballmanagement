@@ -1,9 +1,8 @@
 package Server;
 
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 public class FootBallManageServer {
@@ -14,7 +13,7 @@ public class FootBallManageServer {
 //	private int sidx;
 	FootBallDB fbdb;
 	//연결된 클라이언트 스레드 관리 AL
-	ArrayList<ConnectThread> connectThreads = new ArrayList<ConnectThread>();
+	Vector<ConnectThread> connectThreads = new Vector<ConnectThread>();
 	
 	//로거 객체
 	Logger logger;
