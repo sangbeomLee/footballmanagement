@@ -36,6 +36,7 @@ public class Managerpanel{
 	JPanel buttonpanel = new JPanel();
 	JLabel mangerID = new JLabel(); 
 	JLabel mangerID2 = new JLabel(); 
+	JLabel show_manger = new JLabel(); 
 	
 	//재고관리 UI
 	JPanel stockPanel = new JPanel();
@@ -65,21 +66,65 @@ public class Managerpanel{
 	JPanel personal_day = new JPanel();
 	JPanel Inner_day1 = new JPanel();
 	JPanel Inner_day2 = new JPanel();
-	JPanel Inner_day3 = new JPanel();
-	JButton daybtn1 = new JButton("예약현황");
-	JButton daybtn2 = new JButton("휴무일 지정");
+	JButton daybtn1 = new JButton("업데이트");
 	JTable table;
 	JScrollPane sc;
 	DefaultTableModel model2;
-	String header2 [] = {"날짜","시간","예약현황"};
+	String header2 [] = {"날짜","시간","고객ID"};
 	String contents2 [][];
+	
+	
+	
+	//휴무일 관리 UI
+	JPanel Inner_day3 = new JPanel();//휴무일 패널
+	JPanel h1 = new JPanel();
+	JPanel h2 = new JPanel();
 	JTextField pdt;
+	JTable table3;
+	JScrollPane sc3;
+	DefaultTableModel model3;
+	String header3 [] = {"휴무일 현황"};
+	String contents3 [][];
+	JButton daybtn2 = new JButton("휴무일 지정");
+	JButton daybtn3 = new JButton("삭제");
+
 	
-	
+	//메인패널버튼
 	JButton b1 = new JButton("재고 관리");
 	JButton b2 = new JButton("예약 현황");
+	JButton b3 = new JButton("휴무일");
 
+	
+	public void holl() {
+		
+		
+		pdt = new JTextField("0000-00-00");
 
+		h1.add(pdt);
+		h1.add(daybtn2);
+		h1.add(daybtn3);
+		
+		contents3 = new String[0][0];
+		model3 = new DefaultTableModel(contents3,header3);
+		table3 = new JTable(model3);
+		sc3 = new JScrollPane(table3);
+		sc3.setPreferredSize(new Dimension(300,300));///스크롤 크기 지정
+		
+		h2.add(sc3);
+		
+		Inner_day3.setLayout(new BorderLayout());
+		Inner_day3.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		Inner_day3.add(h1,BorderLayout.SOUTH);
+		Inner_day3.add(h2,BorderLayout.CENTER);
+
+		
+		
+		
+		//Inner_day3.add(pdt);
+		//Inner_day3.add(daybtn2);
+	}
+	
 	public void stock() {
 
 	   contents= new String[0][0];
@@ -119,7 +164,7 @@ public class Managerpanel{
 		//Inner_stock3.add(stockbtn3);
 
 
-		stockPanel.setLayout(null);
+		stockPanel.setLayout(new BorderLayout());
 		stockPanel.add(Inner_stock1,BorderLayout.NORTH);
 		stockPanel.add(Inner_stock2,BorderLayout.WEST);
 		stockPanel.add(Inner_stock3,BorderLayout.SOUTH);
@@ -132,50 +177,36 @@ public class Managerpanel{
 	public void day() {
 
 		contents2 = new String[0][0];
-
 		model2 = new DefaultTableModel(contents2,header2);
 		table = new JTable(model2);
-		Inner_day3.setLayout(null);
-		Inner_day3.setPreferredSize(new Dimension(90
-				0,50));
-		pdt = new JTextField();
-		pdt.setBounds(400, 0, 100, 30); //휴무일 텍스트필드 위치 지정
-		daybtn2.setBounds(500, 0, 80, 35);//휴무일 버튼
-		
-		Inner_day3.add(daybtn1);
-		Inner_day3.add(daybtn2);
-		Inner_day3.add(pdt);
 		sc = new JScrollPane(table);
-		//pdt.setBounds(0,0,30,30);
 		
-		sc.setPreferredSize(new Dimension(400,280));///스크롤 크기 지정
-		Inner_day2.add(sc);
-		
-		/*Inner_day1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
-		Inner_day1.setBorder(new EmptyBorder(10, 10, 10, 10));
-		Inner_day1.add(mangerID2,BorderLayout.WEST);// ID 라벨 부착
-
-		Inner_day2.add(sc);
-
 		//Inner_day3.setLayout(null);
-		Inner_day3.setLayout(new FlowLayout(FlowLayout.CENTER,10,0));
-		Inner_day3.setBorder(new EmptyBorder(10, 10, 10, 10));
+		//Inner_day3.setPreferredSize(new Dimension(900,50));
+		//pdt = new JTextField("0000-00-00");
+		//pdt.setBounds(330, 0, 100, 30); //휴무일 텍스트필드 위치 지정
+		//daybtn2.setBounds(440, 0, 110, 30);//휴무일 버튼
+		
 		//Inner_day3.add(daybtn1);
+		//Inner_day3.add(pdt);
 		//Inner_day3.add(daybtn2);
 		
-		//pdt.setBounds(0,500,100,100);	
-		//pdt.setFont(pdt.getFont().deriveFont(10f));
 		
-		//Inner_day3.setBackground(Color.BLACK);
+		
+		
+		Inner_day1.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		Inner_day1.add(mangerID2);
+		Inner_day1.add(daybtn1);
+		
+		sc.setPreferredSize(new Dimension(400,300));///스크롤 크기 지정
+		Inner_day2.add(sc);
+		
 		
 		personal_day.setLayout(new BorderLayout());
 		personal_day.add(Inner_day1,BorderLayout.NORTH);
 		personal_day.add(Inner_day2,BorderLayout.CENTER);
-		personal_day.add(Inner_day3,BorderLayout.SOUTH);*/
-		personal_day.setLayout(new BorderLayout());
-		personal_day.add(mangerID2,BorderLayout.NORTH);
-		personal_day.add(Inner_day2,BorderLayout.CENTER);
-		personal_day.add(Inner_day3,BorderLayout.SOUTH);
+		//personal_day.add(Inner_day3,BorderLayout.SOUTH);
 		
 		
 	}
@@ -189,7 +220,8 @@ public class Managerpanel{
 
 		buttonpanel.add(b1);
 		buttonpanel.add(b2);
-
+		buttonpanel.add(b3);
+		buttonpanel.add(show_manger);//풋살장 라벨
 
 		mainpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -204,8 +236,13 @@ public class Managerpanel{
 
 		mainpanel.add(personal_day,"personal_day");
 
+		
+		mainpanel.add(Inner_day3,"hol");
+		
+		
 		stock();
 		day();
+		holl();
 
 		frame.setTitle("관리자 화면");
 		frame.setSize(900, 500);
@@ -217,30 +254,22 @@ public class Managerpanel{
 		public void addButtonActionListener(ActionListener listener) {//액션리스너 추가 메소드
 			b1.addActionListener(listener);
 			b2.addActionListener(listener);
+			b3.addActionListener(listener);
 			stockbtn1.addActionListener(listener);
 			stockbtn2.addActionListener(listener);
 			daybtn1.addActionListener(listener);
+			daybtn2.addActionListener(listener);
+			daybtn3.addActionListener(listener);
+			pdt.addActionListener(listener);
 			
 		}
 		
 		public void addTableModelListener(TableModelListener listener) {//테이블에 리스너 부착
 			
 			stocktable.getModel().addTableModelListener(listener); //재고관리 리스너
-			//table.getModel().addTableModelListener(listener);//예약현황 리스너
+			table3.getModel().addTableModelListener(listener);//휴무일 리스너
 
 		}
 		
-		/*
-
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-
-				
-		  int sel = table.getSelectedRow();
-		  System.out.println(sel);
-		  
-		 }
-		*/
-
 	
 }// Managerpanel close

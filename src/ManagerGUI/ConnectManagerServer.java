@@ -81,10 +81,9 @@ public class ConnectManagerServer implements Runnable{
             	macontroll.show_stock(a);
             }
             
-            if(m.msg2.equals("")) // 관리자에 예약 현황 메세지 받는 조건
+            if(m.msg2.equals("checkreservation")) // 관리자에 예약 현황 메세지 받는 조건
             {
             	String a = m.msg1;
-            	//System.out.println(a);
             	macontroll.show_reservation(a);
             }
             
@@ -129,7 +128,20 @@ public class ConnectManagerServer implements Runnable{
 
             }
             
-            //회원쪽
+            if(m.msg2.equals("")) // 휴무일이 지정 서버에서 받아옴
+            {
+                JOptionPane.showMessageDialog(null,"삭제 되었습니다.");
+            }
+            
+            if(m.msg2.equals("")) // 휴무일 현황 메세지 받는 조건
+            {
+            	String a = m.msg1;
+            	macontroll.hol_sh(a);
+            }
+            
+            
+            
+            //회원쪽 
             if(m.msg2.equals("회원가입실패"))
             {
                JOptionPane.showMessageDialog(null,"아이디가 중복됩니다.","", JOptionPane.WARNING_MESSAGE);

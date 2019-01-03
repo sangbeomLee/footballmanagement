@@ -25,9 +25,9 @@ public class ManagerController {
 	
 	int num=0;//재고관리 JTable 행 숫자
 	int num2=0;//예약현황  JTable 행 숫자
-	boolean state1 = false;
-	boolean state2 = false;
+	int num3=0;//휴무일현황  JTable 행 숫자
 	
+	String ground;
 	String id;
 	String outm;
 	Socket socket = null;
@@ -60,7 +60,7 @@ public class ManagerController {
 			
 		
 	}
-	public void appMain() {
+	public void appMain() {//로그인ui액션 리스너
 	
 			administer.addButtonActionListener(new ActionListener() {
 				
@@ -115,11 +115,18 @@ public class ManagerController {
 				
 				if(e.getSource() == Manager.b1)//물품관리 패널 전환
 				{
+					Manager.frame.setSize(900,500);
 					Manager.cardLayout.show(Manager.mainpanel, "stock");
 				}
 				else if(e.getSource() == Manager.b2)//예약 현황 패널 전환
 				{
+					Manager.frame.setSize(900,500);
 					Manager.cardLayout.show(Manager.mainpanel, "personal_day");
+				}
+				else if(e.getSource() == Manager.b3)//휴무일 패널 전환
+				{
+					Manager.frame.setSize(400,400);
+					Manager.cardLayout.show(Manager.mainpanel, "hol");
 				}
 				else if(e.getSource() == Manager.stockbtn2)//행 삭제
 				{
@@ -166,10 +173,49 @@ public class ManagerController {
 								
 					
 				}
-				else if(e.getSource() == Manager.daybtn1)//에약현황 보기
+				else if(e.getSource() == Manager.daybtn1)//에약현황  업데이트
 				{
+					Manager.model2.setRowCount(0); //jtable 초기화
 					num2=0;//예약현황 배열 초기화
-					outMsg.println(gson.toJson(new Message(id,"","","administer","addproduct"))); //예약현황 서버에 요청
+					outMsg.println(gson.toJson(new Message(id,"","","administer","checkreservation"))); //예약현황 서버에 요청
+				}
+				else if(e.getSource() == Manager.daybtn2)//휴무일 추가 버튼
+				{
+					num3++;
+					String input[] = new String[1];
+					input[0] = Manager.pdt.getText();
+					String send = Manager.pdt.getText();//2019-09-03
+					Manager.model3.addRow(input);
+					
+										
+					//outMsg.println(gson.toJson(new Message(id,send,"","administer",""))); //예약현황 서버에 요청
+					Manager.pdt.setText("0000-00-00");
+				}
+				else if(e.getSource() == Manager.pdt)//휴무일 지정 버튼
+				{
+					System.out.println("되는건가???");
+					Manager.pdt.setText("");
+				}
+				else if(e.getSource() == Manager.daybtn3)//휴무일행 삭제
+				{
+					
+					if(Manager.table3.getSelectedRow() == -1)
+					{
+						return;
+					}
+					else
+					{
+						
+						
+						String send = (String) Manager.table3.getValueAt(Manager.table3.getSelectedRow(),0);
+						
+						System.out.println(Manager.table3.getValueAt(Manager.table3.getSelectedRow(),0) );
+						Manager.model3.removeRow(Manager.table3.getSelectedRow());//행 삭제
+						
+						outMsg.println(gson.toJson(new Message(id,send,"","administer","deleteproduct"))); //삭제되었다고 서버에 메세지 보내기
+						
+						num3--;
+					}
 				}
 				
 				
@@ -227,7 +273,7 @@ public class ManagerController {
 	
 	public void setSub(SubFrame sub) {
 		   this.sub = sub;
-	   }
+	   }	
 	
 	public void part2() {//관리자 화면 메소드
 		
@@ -239,7 +285,8 @@ public class ManagerController {
 		outMsg.println(gson.toJson(new Message(id, "", "product", "administer", "setproduct"))); // 서버에 메세지 보내고
 		Manager = new Managerpanel(); // 관리자 화면 객체 생성
 		Manager.mangerID.setText(id + "님이 로그인 하였습니다");//화면에 접속한 아이디 갱신 
-		Manager.mangerID2.setText(id + "님이 로그인 하였습니다");//화면에 접속한 아이디 갱신
+		Manager.mangerID2.setText(id + "님이 로그인 하였습니다                                                  ");//화면에 접속한 아이디 갱신
+		//Manager.show_manger.setText(       );///////////////////// 
 		
 	}
 	
@@ -267,15 +314,32 @@ public class ManagerController {
 		
 		String arr [] = a.split("#");
 		
-		System.out.println(arr[0]);
+		//System.out.println(arr[0]);
 		Vector<String> row = new Vector<String>();
-		row.add(arr[0]); // 0에는 날짜 1에는시간 2에는 예약유무 가능
+		row.add(arr[0]); // 0에는 날짜 1에는시간 2에는 유저id
 		row.add(arr[1]);
 		row.add(arr[2]);
 		Manager.model2.addRow(row);//테이블에 한행 삽입
 		
 		
 	}
+	
+	public void hol_sh(String a){
+		
+		Manager.contents3 = new String[num3++][0];
+		
+		String arr [] = a.split("#");
+		
+		Vector<String> row = new Vector<String>();
+		row.add(arr[0]); // 0에는 날짜 1에는시간 2에는 유저id
+		row.add(arr[1]);
+		row.add(arr[2]);
+		Manager.model3.addRow(row);//테이블에 한행 삽입
+	
+	}
+	
+	
+	
 	
 }//managerController close
 
