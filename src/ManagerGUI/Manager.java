@@ -6,129 +6,64 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
+import UserGUI.User.SubFrame;
+
 
 public class Manager extends JFrame {
 
-		public JLabel Title;
-		public JTextField ID,Pass;
-		public JButton Log,Join,Find;
-		EtchedBorder eborder;
-		public SubFrame sub;
-		public Manager(){
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			
-			
-			
-			getContentPane().setBackground(Color.WHITE);
-			
-			sub = new SubFrame();
-			
-			eborder=new EtchedBorder(EtchedBorder.RAISED);
-			Title = new JLabel("풋살 통합 관리",SwingConstants.CENTER);
-			Title.setBorder(eborder);
-			Title.setFont(new Font("Serif",Font.BOLD,11));
-			Title.setFont(Title.getFont().deriveFont(15f));
-			Title.setBounds(375,50,250,70);
-			Title.setBackground(Color.black);
-
-			
-			ID = new JTextField("아이디");
-			ID.setFont(ID.getFont().deriveFont(10f));
-			ID.setBounds(350, 330, 150, 20);
-			ID.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-					ID.setText("");
-				}
-			});
-			Pass = new JTextField("비밀번호");
-			Pass.setFont(Pass.getFont().deriveFont(10f));
-			Pass.setBounds(350, 360, 150, 20);
-			Pass.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-					Pass.setText("");
-				}
-			});
-			Log = new JButton("LOGIN");
-			Log.setBounds(530,323,130,60);
-			
-			Join = new JButton("회원가입");
-			Join.setBounds(380,423,130,30);
-			
-			
-			//Join.addActionListener(this);
-			
-			Find = new JButton("아이디/비번찾기");
-			Find.setBounds(520,423,130,30);
-			
-			//Log.addActionListener(this);
-			
-			getContentPane().add(Find);
-			getContentPane().add(Join);
-			getContentPane().add(Log);
-			getContentPane().add(ID);
-			getContentPane().add(Pass);
-			getContentPane().add(Title);
-			
+	public JLabel Title;
+	public JTextField ID,Pass;
+	public JButton Log,Join,Find;
+	EtchedBorder eborder;
+	public SubFrame sub;
 	
-			
-			pack();
-			setSize(1000,600);
-			super.setVisible(true);
-	}
+	//관리자UI 프레임
+	public Manager(){
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(null);
+		getContentPane().setBackground(Color.WHITE);
+		
+		sub = new SubFrame();
+		
+		eborder=new EtchedBorder(EtchedBorder.RAISED);
+		Title = new JLabel("풋살 통합 관리",SwingConstants.CENTER);
+		Title.setBorder(eborder);
+		Title.setFont(new Font("Serif",Font.BOLD,11));
+		Title.setFont(Title.getFont().deriveFont(15f));
+		Title.setBounds(375,50,250,70);
+		Title.setBackground(Color.black);
+		
+		ID = new JTextField("아이디");
+		ID.setFont(ID.getFont().deriveFont(10f));
+		ID.setBounds(350, 330, 150, 20);
+		
+		Pass = new JTextField("비밀번호");
+		Pass.setFont(Pass.getFont().deriveFont(10f));
+		Pass.setBounds(350, 360, 150, 20);
+		
+		Log = new JButton("LOGIN");
+		Log.setBounds(530,323,130,60);
+		
+		Join = new JButton("회원가입");
+		Join.setBounds(380,423,130,30);
+		
+		
+		
+		
+		//Log.addActionListener(this);
+		
+		getContentPane().add(Join);
+		getContentPane().add(Log);
+		getContentPane().add(ID);
+		getContentPane().add(Pass);
+		getContentPane().add(Title);
+		
+
+		
+		pack();
+		setSize(1000,600);
+		super.setVisible(true);
+}
 	
 
 	public class SubFrame extends Frame{
@@ -239,5 +174,7 @@ public class Manager extends JFrame {
 		sub.Signup.addActionListener(listener);
 		Log.addActionListener(listener);
 		Join.addActionListener(listener);
+		ID.addActionListener(listener);
+		Pass.addActionListener(listener);
 	}
 }

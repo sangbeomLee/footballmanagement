@@ -26,7 +26,7 @@ public class ConnectManagerServer implements Runnable{
    public Manager manager;
    private BufferedReader inMsg = null;
    private PrintWriter outMsg = null;
-   ManagerController macontroll;/////////////
+   ManagerController macontroll;
    String fname;
    Socket socket = null;
    Message m;
@@ -109,7 +109,6 @@ public class ConnectManagerServer implements Runnable{
             }
             else if(m.type1.equals("fname"))
             {
-            	//System.out.println(m.msg1);
             	fname = m.msg1;
             	String[] frameArray = fname.split("#");
             	System.out.println(frameArray[0]);

@@ -36,16 +36,14 @@ public class ManagerController {
 	
 	public ManagerController() {
 		
-		 //Manager = new Managerpanel();	
-
+	
 		administer= new Manager(); //로그인 화면
 		appMain();
 		
 		  
 		
 		  
-		 //this.administer = administer;
-	      logger = Logger.getLogger(this.getClass().getName());
+		  logger = Logger.getLogger(this.getClass().getName());
 	      
 	      connectS = new ConnectManagerServer(this);
 	      connectS.connectServer(administer);
@@ -70,7 +68,7 @@ public class ManagerController {
 					Object obj = e.getSource();
 					
 					if(obj ==administer.Log) { //로근인 서버에 메시지 보내는거
-						outMsg.println(gson.toJson(new Message(administer.ID.getText(),administer.Pass.getText(),"","customer","login")));
+						outMsg.println(gson.toJson(new Message(administer.ID.getText(),administer.Pass.getText(),"","administer","login")));
 						logger.info("[로그인 보냄]!!");
 					}
 					
@@ -95,6 +93,14 @@ public class ManagerController {
 						outMsg.println(gson.toJson(m));
 						
 						
+					}
+					if(obj==administer.ID)
+					{
+						administer.ID.setText("");
+					}
+					if(obj==administer.Pass)
+					{
+						administer.Pass.setText("");
 					}
 					
 					

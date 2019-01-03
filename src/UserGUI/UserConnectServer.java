@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.*;
 import com.google.gson.Gson;
+//import com.sun.corba.se.spi.activation.Server;
+
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
@@ -26,7 +28,9 @@ public class UserConnectServer implements Runnable{
     public Userreserve reserve;
 	private BufferedReader inMsg = null;
 	private PrintWriter outMsg = null;
-	String fname;
+	String [] ground = new String[4];
+	String [] days = new String[7];
+	String [] time = new String[5];
 	String outm;
 	Socket socket = null;
 	Message m;
@@ -35,6 +39,14 @@ public class UserConnectServer implements Runnable{
 	Gson gson;
 	boolean status;
 	String id;
+	int cnt=0;
+	int gk=0,dk=0,tk=0;
+	UserController userconnect;
+	
+	
+	public UserConnectServer(UserController con) {
+		userconnect = con;
+	}
 	
 	public void connectServer(User user, Userreserve reserve) {
 		this.user = user;
@@ -81,27 +93,85 @@ public class UserConnectServer implements Runnable{
 				{
 					id = m.id;
 					JOptionPane.showMessageDialog(null, "로그인성공");
+					user.setVisible(false);
+					user.dispose();
+					reserve.setVisible(true);
 				}
 				else if(m.msg2.equals("비밀번호다름"))
 				{
-					JOptionPane.showMessageDialog(null, "비밀번호가 다릅니다.","" ,JOptionPane.WARNING_MESSAGE);
+					
+					JOptionPane.showMessageDialog(null, "비밀번호가 틀렸습니다.","" ,JOptionPane.WARNING_MESSAGE);
 				}
-	    		/* 
-	    		  조회
-	    		  else if(m.type1.equals("fname"))
-		            {
-		            	//System.out.println(m.msg1);
-		            	fname = m.msg1;
-		            	String[] frameArray = fname.split("#");
-		            	System.out.println(frameArray[0]);
-		            	
-		            	for(int i=0;i<frameArray.length;i++)
-						reserve.days.addItem(frameArray[i]);
-					}*/
-				
-				
+	    		
+	    		  
+	    		else if(m.msg2.equals("풋살장이름"))
+		        {
+
+	    			//int j=0;
+	    			//System.out.println(m.msg1);
+	    			String fname = m.msg1;
+	    			//reserve.days.removeAllItems();
+	    			//reserve.time.removeAllItems();
+	    			String[] Array = fname.split("#");
+		            	for(int i=0;i<Array.length;i++)
+		            		reserve.ground.addItem(Array[i]);
+		            	/*for(j=0;)
+		            	if(Array[0]=="1")
+		            		
+		            	.Field.addItem(frameArray[i]);
+		            
+
+*/
+		        }
+	    		else if(m.msg2.equals("fdate"))
+	    		{
+	    			String fname = m.msg1;
+	    			String[] Array = fname.split("#");
+	    			///	System.out.println("#############################################");
+	    			//reserve.time.removeAllItems();
+	    			
+	            	for(int i=0;i<Array.length;i++) {
+	            		reserve.days.addItem(Array[i]);
+	            		System.out.println(Array[i]);
+	            	}
+	            
+	     		}
+	    		else if(m.msg2.equals("ftime"))
+	    		{
+	    	    	String fname = m.msg1;
+	            	String[] Array = fname.split("#");
+	    			for(int i=0;i<Array.length;i++)
+	            		reserve.time.addItem(Array[i]);
+	    			
+	    		}
+	    		else if(m.msg2.equals("ftime"))
+	    		{
+	    	    	String fname = m.msg1;
+	            	String[] Array = fname.split("#");
+	    			for(int i=0;i<Array.length;i++)
+	            		reserve.time.addItem(Array[i]);
+	    		}
+	    		else if(m.msg2.equals("notreserve"))
+	    		{
+	    			JOptionPane.showMessageDialog(null, "예약 실패");
+	    		}
+	    		else if(m.msg2.equals("reserve"))
+	    		{
+	    			JOptionPane.showMessageDialog(null, "로그인성공");
+	    		}
+	    		else if(m.msg2.equals("state"))
+	    		{
+	    			String a = m.msg1;
+	            	System.out.println(a+"**");
+	    			userconnect.show_stock(a);
+	    		}
+	    		/*else if(m.msg2.equals(""))
+	    		{
+	
+	    		}*/
+			
+
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				logger.log(WARNING,"[User]메시지 스트림 종료!!");
 
 				e.printStackTrace();
