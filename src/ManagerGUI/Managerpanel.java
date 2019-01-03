@@ -34,7 +34,9 @@ public class Managerpanel{
 	CardLayout cardLayout = new CardLayout(0,0);
 	JPanel mainpanel = new JPanel();
 	JPanel buttonpanel = new JPanel();
-
+	JLabel mangerID = new JLabel(); 
+	JLabel mangerID2 = new JLabel(); 
+	
 	
 	JPanel stockPanel = new JPanel();
 	JPanel Inner_stock1 = new JPanel();
@@ -44,7 +46,6 @@ public class Managerpanel{
 	JPanel btn_label1 = new JPanel();
 	JPanel btn_label2 = new JPanel();
 	JPanel btn_label3 = new JPanel();
-	JComboBox stockcombo = new JComboBox();
 	JTextField t1 = new JTextField();
 	JTextField t2 = new JTextField();
 	JTextField t3 = new JTextField();
@@ -53,7 +54,7 @@ public class Managerpanel{
 	JLabel l3 = new JLabel("대여 가능");
 	JButton stockbtn1 = new JButton("추가");
 	JButton stockbtn2 = new JButton("삭제");
-	JButton stockbtn3 = new JButton("수정");
+	//JButton stockbtn3 = new JButton("수정");
 	JTable stocktable;
 	JScrollPane stock_sc;
 	DefaultTableModel model1;
@@ -66,7 +67,7 @@ public class Managerpanel{
 	JPanel Inner_day3 = new JPanel();//personal_day 
 	JButton daybtn1 = new JButton("재고관리");
 	JButton daybtn2 = new JButton("예약 현황");
-	JComboBox combo = new JComboBox();
+	//JComboBox combo = new JComboBox();
 	JTable table;
 	JScrollPane sc;
 
@@ -90,7 +91,7 @@ public class Managerpanel{
 		
 		Inner_stock1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
 		Inner_stock1.setBorder(new EmptyBorder(10, 10, 10, 10));
-		Inner_stock1.add(stockcombo);
+		Inner_stock1.add(mangerID);//관리자 아이디 표시 라벨
 
 		Inner_stock2.setPreferredSize(new Dimension(300, 600));
 		Inner_stock2.setLayout(new GridLayout(3,2,30,50));
@@ -110,7 +111,7 @@ public class Managerpanel{
 		Inner_stock3.setBorder(new EmptyBorder(10, 10, 10, 10));
 		Inner_stock3.add(stockbtn1);
 		Inner_stock3.add(stockbtn2);
-		Inner_stock3.add(stockbtn3);
+		//Inner_stock3.add(stockbtn3);
 
 
 		stockPanel.setLayout(new BorderLayout());
@@ -133,7 +134,7 @@ public class Managerpanel{
 
 	Inner_day1.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
 		Inner_day1.setBorder(new EmptyBorder(10, 10, 10, 10));
-		Inner_day1.add(combo,BorderLayout.WEST);
+		Inner_day1.add(mangerID2,BorderLayout.WEST);// ID 라벨 부착
 
 		Inner_day2.add(sc);
 
@@ -188,7 +189,7 @@ public class Managerpanel{
 			b2.addActionListener(listener);
 			stockbtn1.addActionListener(listener);
 			stockbtn2.addActionListener(listener);
-			stockbtn3.addActionListener(listener);
+			//stockbtn3.addActionListener(listener);
 			
 		}
 		

@@ -26,7 +26,7 @@ public class ConnectManagerServer implements Runnable{
    public Manager manager;
    private BufferedReader inMsg = null;
    private PrintWriter outMsg = null;
-   ManagerController macontroll;/////////////
+   ManagerController macontroll;
    String fname;
    Socket socket = null;
    Message m;
@@ -73,7 +73,7 @@ public class ConnectManagerServer implements Runnable{
          
         	msg = inMsg.readLine();
             m = gson.fromJson(msg, Message.class);//Message 클래스 형식으로 변환해준다.
-            //System.out.println(m.msg1);
+            System.out.println(m.msg1 + "###" + m.msg2);
             
             if(m.msg2.equals("productinfo")) // 관리자에 재고 메세지 받는 조건
             {
@@ -82,10 +82,36 @@ public class ConnectManagerServer implements Runnable{
             	macontroll.show_stock(a);
             	
             }
+            
             if(m.msg2.equals("finish")) // 관리자 화면에 재고 다뿌려주었다고 완료 메세지 받는 조건
             {
             	macontroll.appMain2();
             }
+            
+            
+            if(m.msg2.equals("changed")) // 수정되었다고 서버에서 받아옴
+            {
+                JOptionPane.showMessageDialog(null,"수정 되었습니다.");
+            }
+            
+            if(m.msg2.equals("notchanged")) // 수정안되었다고 서버에서 받아옴
+            {
+                JOptionPane.showMessageDialog(null,"수정 실패하였습니다.","", JOptionPane.WARNING_MESSAGE);
+
+            }
+            
+            if(m.msg2.equals("addproduct")) // 추가되었다고 서버에서 받아옴
+            {
+            	System.out.println("됨");
+                JOptionPane.showMessageDialog(null,"추가 되었습니다.");
+            }
+            
+            if(m.msg2.equals("notaddproduc")) // 추가 안되었다고 서버에서 받아옴
+            {
+                JOptionPane.showMessageDialog(null,"추가 실패하였습니다.","", JOptionPane.WARNING_MESSAGE);
+
+            }
+            
             
             
             if(m.msg2.equals("회원가입실패"))
@@ -125,11 +151,10 @@ public class ConnectManagerServer implements Runnable{
             logger.log(WARNING,"[manager]메시지 스트림 종료!!");
 
             e.printStackTrace();
-         }
-         
-         
+         }       
       }
-      
+
+   
    }
    
    public Socket setSocket() {
