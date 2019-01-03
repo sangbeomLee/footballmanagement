@@ -34,6 +34,7 @@ public class UserConnectServer implements Runnable{
 	Thread thread;
 	Gson gson;
 	boolean status;
+	String id;
 	
 	public void connectServer(User user, Userreserve reserve) {
 		this.user = user;
@@ -78,6 +79,7 @@ public class UserConnectServer implements Runnable{
 				
 				else if(m.msg2.equals("로그인성공"))
 				{
+					id = m.id;
 					JOptionPane.showMessageDialog(null, "로그인성공");
 				}
 				else if(m.msg2.equals("비밀번호다름"))
@@ -105,6 +107,7 @@ public class UserConnectServer implements Runnable{
 				e.printStackTrace();
 			}
 		}
+		
 	}
 	
 	public Socket setSocket() {
@@ -122,4 +125,6 @@ public class UserConnectServer implements Runnable{
 	public Gson setGson() {
 		return this.gson;
 	}
+	
 }
+
