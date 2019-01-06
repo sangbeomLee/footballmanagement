@@ -37,21 +37,21 @@ public class ConnectManagerServer implements Runnable{
    SubFrame sub;
    String id;
    
-   public ConnectManagerServer(ManagerController control) {
+   public ConnectManagerServer(ManagerController control) {//생성자
 	   macontroll = control;
    }
    
-   public void connectServer(Manager manager) {
+   public void connectServer(Manager manager) {//서버를 연결시켜주는 매소드
       logger = Logger.getLogger(this.getClass().getName());
       this.manager = manager;
       try {
          socket = new Socket("172.16.30.242",8888); //연결할 ip주소
          logger.log(INFO,"[Manager]Server 연결 성공!!");
          gson = new Gson();
-         inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-         outMsg = new PrintWriter(socket.getOutputStream(),true);
+         inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));//서버에서 보낸 메세지 
+         outMsg = new PrintWriter(socket.getOutputStream(),true);//서버에 보낼 메세지 변
          thread = new Thread(this);
-         thread.start();
+         thread.start();//thread 시작
          
       } catch (UnknownHostException e) {
          // TODO Auto-generated catch block
@@ -62,7 +62,7 @@ public class ConnectManagerServer implements Runnable{
          e.printStackTrace();
       }
    }
-   public void run() {
+   public void run() {//thread 시작 여기서 서버에서 메세지를 받음
       status = true;
       String msg;
       
@@ -130,11 +130,22 @@ public class ConnectManagerServer implements Runnable{
             else if(m.msg2.equals("checkcozyday")) // 휴무일 현황 메세지 받는 조건
             {
             	String a = m.msg1;
-            	macontroll.hol_sh(a);
+            	String b = "update";
+            	macontroll.hol_sh(a,b);
             }
             else if(m.msg2.equals("cozyday")) // 휴무일 현황 메세지 받는 조건
             {
+            	String a="add";
+            	String b = "add";
+            	macontroll.hol_sh(a,b);
             	JOptionPane.showMessageDialog(null,"추가 되었습니다.");
+            }
+            else if(m.msg2.equals("notcozyday")) // 휴무일 지정이 안되었을 경우
+            {
+            	String a="not";
+            	String b = "not";
+            	macontroll.hol_sh(a,b);
+            	JOptionPane.showMessageDialog(null,"휴무일 지정한 날짜에 예약이 되어있습니다.");
             }
             
             

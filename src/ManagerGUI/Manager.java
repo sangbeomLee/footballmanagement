@@ -9,7 +9,7 @@ import javax.swing.border.EtchedBorder;
 import UserGUI.User.SubFrame;
 
 
-public class Manager extends JFrame {
+public class Manager extends JFrame {//관리자 로그인 UI
 
 	public JLabel Title;
 	public JTextField ID,Pass;
@@ -23,9 +23,9 @@ public class Manager extends JFrame {
 		setLayout(null);
 		getContentPane().setBackground(Color.WHITE);
 		
-		sub = new SubFrame();
+		sub = new SubFrame();//서브 프레임을 주어 회원가입 프레임 생성
 		
-		eborder=new EtchedBorder(EtchedBorder.RAISED);
+		eborder=new EtchedBorder(EtchedBorder.RAISED);//메인화면 타이틀 테두리 효과지정
 		Title = new JLabel("풋살 통합 관리",SwingConstants.CENTER);
 		Title.setBorder(eborder);
 		Title.setFont(new Font("Serif",Font.BOLD,11));
@@ -41,16 +41,13 @@ public class Manager extends JFrame {
 		Pass.setFont(Pass.getFont().deriveFont(10f));
 		Pass.setBounds(350, 360, 150, 20);
 		
-		Log = new JButton("LOGIN");
+		Log = new JButton("LOGIN");//로그인 버튼
 		Log.setBounds(530,323,130,60);
 		
-		Join = new JButton("회원가입");
+		Join = new JButton("회원가입");//회원가입 버튼
 		Join.setBounds(380,423,130,30);
 		
-		
-		
-		
-		//Log.addActionListener(this);
+
 		
 		getContentPane().add(Join);
 		getContentPane().add(Log);
@@ -66,7 +63,7 @@ public class Manager extends JFrame {
 }
 	
 
-	public class SubFrame extends Frame{
+	public class SubFrame extends Frame{//회원가입 프레임
 		public JTextField IDin,Passin,Passrein,Name,Mail,Number;
 		public JComboBox<String> Field;
 		public JLabel LIDin,LPassin,LPassrein,LName,LMail,LNumber,Passre,LField;
@@ -155,7 +152,7 @@ public class Manager extends JFrame {
 			add(LField);
 		
 			
-			addWindowListener(new WindowAdapter() {
+			addWindowListener(new WindowAdapter() {//회원가입 프레임만 다음
 			
 				public void windowClosing(WindowEvent e) {
 					setVisible(false);
@@ -176,5 +173,6 @@ public class Manager extends JFrame {
 		Join.addActionListener(listener);
 		ID.addActionListener(listener);
 		Pass.addActionListener(listener);
+		//서브 프레임 버튼과 메인 프레임 버튼 이벤트
 	}
 }
